@@ -7,7 +7,7 @@ import (
 var TestDatabase = &DatabaseConfig{
 	Host:         testEnv("TEST_DATABASE_HOST", "localhost"),
 	User:         testEnv("TEST_DATABASE_USER", "postgres"),
-	Password:     testEnv("TEST_DATABASE_PASSWORD", "root"),
+	Password:     testEnv("TEST_DATABASE_PASSWORD", "postgres"),
 	DatabaseName: testEnv("TEST_DATABASE_NAME", "pethost_test"),
 	Port:         testEnv("TEST_DATABASE_PORT", "5432"),
 }

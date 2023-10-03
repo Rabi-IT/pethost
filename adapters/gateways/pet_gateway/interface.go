@@ -19,6 +19,7 @@ type CreateInput struct {
 }
 
 type PatchFilter struct {
+	ID        *string
 	Species   *string
 	Name      *string
 	Breed     *string

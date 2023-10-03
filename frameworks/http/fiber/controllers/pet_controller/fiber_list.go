@@ -8,7 +8,7 @@ import (
 
 func (c PetController) List(ctx *fiber.Ctx) error {
 	filter := &pet_case.ListInput{}
-	if err := ctx.QueryParser(&filter); err != nil {
+	if err := ctx.QueryParser(filter); err != nil {
 		return err
 	}
 

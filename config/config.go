@@ -3,7 +3,7 @@ package config
 import "os"
 
 var (
-	Port               = "3000"
+	Port               = os.Getenv("PORT")
 	ProductionDatabase = &DatabaseConfig{
 		Host:         os.Getenv("DATABASE_HOST"),
 		DatabaseName: os.Getenv("DATABASE_NAME"),

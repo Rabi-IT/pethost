@@ -6,6 +6,7 @@ import (
 )
 
 type PatchFilter struct {
+	ID        *string
 	Breed     *string
 	Size      *string
 	Birthdate *string
@@ -28,6 +29,7 @@ type PatchValues struct {
 func (c PetCase) Patch(ctx context.Context, filter PatchFilter, values PatchValues) (bool, error) {
 	return c.gateway.Patch(
 		g.PatchFilter{
+			ID:        filter.ID,
 			Breed:     filter.Breed,
 			Size:      filter.Size,
 			Birthdate: filter.Birthdate,

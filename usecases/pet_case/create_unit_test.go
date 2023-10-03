@@ -15,7 +15,7 @@ func makeSut(g pet_gateway.PetGateway) *pet_case.PetCase {
 	return pet_case.New(g)
 }
 
-func Test_Create__should_fail_if_name_is_empty(t *testing.T) {
+func Test_Unit_Create__should_fail_if_name_is_empty(t *testing.T) {
 	sut := makeSut(nil)
 
 	_, err := sut.Create(context.Background(), &pet_case.CreateInput{
@@ -32,7 +32,7 @@ func Test_Create__should_fail_if_name_is_empty(t *testing.T) {
 	require.Equal(t, expectedMsg, err.Error())
 }
 
-func Test_Create__should_not_fail_if_all_optional_fields_are_not_filled_in(t *testing.T) {
+func Test_Unit_Create__should_not_fail_if_all_optional_fields_are_not_filled_in(t *testing.T) {
 	gateway := mocks.NewPetGateway(t)
 	expectedID := "ANY_ID"
 	gateway.On("Create", mock.Anything).Return(expectedID, nil)

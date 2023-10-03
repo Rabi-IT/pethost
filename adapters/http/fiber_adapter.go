@@ -34,6 +34,7 @@ func newFiber(d database.Database) HTTPServer {
 	)
 
 	routes.Pet(app, factories.NewPet(d))
+	routes.PetHost(app, factories.NewPetHost(d))
 
 	return &fiberAdapter{app}
 }

@@ -1,19 +1,19 @@
-package pet_controller
+package host_controller
 
 import (
 	"pethost/frameworks/http/fiber/parser"
-	"pethost/usecases/pet_case"
+	"pethost/usecases/host_case"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func (c PetController) Patch(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
-	filter := &pet_case.PatchFilter{
-		ID: &id,
+func (c PetHostController) Patch(ctx *fiber.Ctx) error {
+	filter := &host_case.PatchFilter{}
+	if err := ctx.QueryParser(&filter); err != nil {
+		return err
 	}
 
-	data := pet_case.PatchValues{}
+	data := host_case.PatchValues{}
 	if err := parser.ParseBody(ctx, &data); err != nil {
 		return ctx.JSON(err)
 	}
