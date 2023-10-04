@@ -1,6 +1,7 @@
 package fixtures
 
 import (
+	"net/http"
 	"pethost/adapters/gateways/pet_gateway"
 	"pethost/usecases/pet_case"
 	"testing"
@@ -26,23 +27,28 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput) string {
 		}
 	}
 
-	response := RawPost(t, RawPostInput{
-		Body: Body,
-		URI:  "/pet",
+	id := ""
+	statusCode := Post(t, PostInput{
+		Body:     Body,
+		URI:      "/pet",
+		Response: &id,
 	})
 
-	require.NotEmpty(t, response)
+	require.Equal(t, http.StatusCreated, statusCode)
+	require.NotEmpty(t, id)
 
-	return response
+	return id
 }
 
-func (petFixture) GetByID(t *testing.T, id string) pet_gateway.GetByIDOutput {
+func (petFixture) GetByID(t *testing.T, id string) (pet_gateway.GetByIDOutput, int) {
 	found := pet_gateway.GetByIDOutput{}
 
-	Get(t, GetInput{
+	input := GetInput{
 		URI:      "/pet/" + id,
 		Response: &found,
-	})
+	}
 
-	return found
+	statusCode := Get(t, input)
+
+	return found, statusCode
 }
