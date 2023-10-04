@@ -18,5 +18,5 @@ func (c PetController) Create(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.SendString(id)
+	return ctx.Status(201).SendString(id)
 }
