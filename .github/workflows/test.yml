@@ -40,6 +40,3 @@ jobs:
           go run cmd/test_setup.go &
           sleep 5
           go test ./... -p 1 -v
-
-      - name: Dispose
-        run: kill $(jobs -p)
