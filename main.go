@@ -12,9 +12,17 @@ func main() {
 	time.Local = time.UTC
 
 	db := factories.NewProductionDatabase()
-	db.CreateDatabase()
-	db.Connect()
-	db.Migrate()
+	if err := db.CreateDatabase(); err != nil {
+		panic(err)
+	}
+
+	if err := db.Connect(); err != nil {
+		panic(err)
+	}
+
+	if err := db.Migrate(); err != nil {
+		panic(err)
+	}
 
 	httpServer := http.New(db)
 
