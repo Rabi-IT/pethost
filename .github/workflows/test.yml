@@ -14,7 +14,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13.4-alpine
+        image: postgres:16-alpine3.18
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
