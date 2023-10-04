@@ -14,7 +14,9 @@ var tables = []string{
 
 func CleanDatabase() {
 	if TestDatabase.Conn == nil {
-		TestDatabase.Connect()
+		if err := TestDatabase.Connect(); err != nil {
+			panic(err)
+		}
 	}
 
 	testConn := TestDatabase.Conn
