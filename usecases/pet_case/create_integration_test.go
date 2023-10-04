@@ -1,6 +1,7 @@
 package pet_case_test
 
 import (
+	"net/http"
 	"pethost/adapters/gateways/pet_gateway"
 	"pethost/fixtures"
 	"pethost/usecases/pet_case"
@@ -16,12 +17,15 @@ func Test_Integration_should_create(t *testing.T) {
 		Name: "Pet",
 	}
 
-	response := fixtures.RawPost(t, fixtures.RawPostInput{
-		Body: Body,
-		URI:  "/pet",
+	id := ""
+	statusCode := fixtures.Post(t, fixtures.PostInput{
+		Body:     Body,
+		URI:      "/pet",
+		Response: &id,
 	})
 
-	require.NotEmpty(t, response)
+	require.Equal(t, http.StatusCreated, statusCode)
+	require.NotEmpty(t, id)
 }
 
 func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
@@ -91,7 +95,8 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 	})
 	require.True(t, ok == "OK")
 
-	found := fixtures.Pet.GetByID(t, id)
+	found, statusCode := fixtures.Pet.GetByID(t, id)
+	require.Equal(t, http.StatusOK, statusCode)
 
 	EXPECTED := pet_gateway.GetByIDOutput{
 		Name:      "NewName",
