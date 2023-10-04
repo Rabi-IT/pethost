@@ -3,14 +3,16 @@ package fixtures
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
+	"pethost/config"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-const url = "http://127.0.0.1:3000"
+var url = fmt.Sprintf("http://127.0.0.1:%s", config.Port)
 
 type PostInput struct {
 	Body     any
