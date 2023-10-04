@@ -10,7 +10,7 @@ on:
 jobs:
   Test:
     runs-on: ubuntu-latest
-    container: golang:1.17.3
+    container: golang:1.21.0
 
     services:
       postgres:
