@@ -29,16 +29,17 @@ jobs:
       - name: Fetch Repository
         uses: actions/checkout@v3
 
-      - name: Setup Test
-        env:
-          PORT: 3000
-          TEST_DATABASE_HOST: postgres
-        run: go run cmd/test_setup.go &
+      - name: Install deps
+        run: go get
 
       - name: Run Test
         env:
+          PORT: 3000
           TEST_DATABASE_HOST: postgres
-        run: go test ./... -p 1 -v
+        run: |
+          go run cmd/test_setup.go &
+          sleep 5
+          go test ./... -p 1 -v
 
       - name: Dispose
         run: kill $(jobs -p)
