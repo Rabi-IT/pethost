@@ -110,3 +110,28 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 
 	require.Equal(t, EXPECTED, found)
 }
+
+func Test_Integration_should_be_able_to_delete(t *testing.T) {
+	fixtures.CleanDatabase()
+
+	id := fixtures.Pet.Create(t, nil)
+
+	Body := pet_case.PatchValues{
+		Name: "NewName",
+	}
+
+	respBody, statusCode := fixtures.Delete(t, fixtures.DeleteInput{
+		Body: Body,
+		URI:  "/pet/" + id,
+	})
+
+	require.Equal(t, statusCode, http.StatusNoContent)
+	require.Equal(t, respBody, "")
+
+	found, statusCode := fixtures.Pet.GetByID(t, id)
+	require.Equal(t, statusCode, http.StatusNotFound)
+
+	EXPECTED := pet_gateway.GetByIDOutput{}
+
+	require.Equal(t, EXPECTED, found)
+}
