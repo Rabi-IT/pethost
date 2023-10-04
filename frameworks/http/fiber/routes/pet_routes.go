@@ -12,5 +12,5 @@ func Pet(app *fiber.App, c *pet_controller.PetController) {
 	route.Patch("/:id", c.Patch)
 	route.Get("/:id", c.GetByID)
 	route.Get("/", c.List)
-	route.Delete("/", c.Delete)
+	route.Delete("/:id", c.Delete)
 }
