@@ -1,2 +1,2 @@
 setup_test:
-	go run test.go
+	go run cmd/test_setup.go
