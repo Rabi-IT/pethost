@@ -25,6 +25,7 @@ func (g GormPetHostGatewayAdapter) GetByID(id string) (*GetByIDOutput, error) {
 		Name:           output.Name,
 		City:           output.City,
 		ZIP:            output.ZIP,
+		Complement:     output.Complement,
 	}
 
 	return &adapted, nil
