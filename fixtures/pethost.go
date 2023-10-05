@@ -2,14 +2,14 @@ package fixtures
 
 import (
 	"net/http"
-	"pethost/adapters/gateways/pet_gateway"
+	"pethost/adapters/gateways/pethost_gateway"
 	"pethost/usecases/pethost_case"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-const baseURI = "/pethost"
+const baseURI = "/pethost/"
 
 type pethostFixture struct{}
 
@@ -47,8 +47,8 @@ func (pethostFixture) Create(t *testing.T, input *pethost_case.CreateInput) stri
 	return id
 }
 
-func (pethostFixture) GetByID(t *testing.T, id string) (pet_gateway.GetByIDOutput, int) {
-	found := pet_gateway.GetByIDOutput{}
+func (pethostFixture) GetByID(t *testing.T, id string) (pethost_gateway.GetByIDOutput, int) {
+	found := pethost_gateway.GetByIDOutput{}
 
 	input := GetInput{
 		URI:      baseURI + id,
