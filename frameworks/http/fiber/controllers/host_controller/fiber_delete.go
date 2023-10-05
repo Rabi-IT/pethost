@@ -13,7 +13,7 @@ func (c PetHostController) Delete(ctx *fiber.Ctx) error {
 	}
 
 	if deleted {
-		return ctx.SendStatus(200)
+		return ctx.SendStatus(204)
 	}
 
 	return ctx.SendStatus(404)
