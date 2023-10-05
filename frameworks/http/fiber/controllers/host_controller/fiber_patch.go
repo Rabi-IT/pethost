@@ -8,9 +8,9 @@ import (
 )
 
 func (c PetHostController) Patch(ctx *fiber.Ctx) error {
-	filter := &pethost_case.PatchFilter{}
-	if err := ctx.QueryParser(&filter); err != nil {
-		return err
+	id := ctx.Params("id")
+	filter := &pethost_case.PatchFilter{
+		ID: id,
 	}
 
 	data := pethost_case.PatchValues{}
