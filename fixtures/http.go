@@ -62,8 +62,12 @@ func Get(t *testing.T, input GetInput) (statusCode int) {
 	responseBody, err := io.ReadAll(resp.Body)
 	require.Nil(t, err)
 
+	if v, ok := input.Response.(*string); ok {
+		*v = string(responseBody)
+		return
+	}
+
 	if resp.Header.Get("Content-Type") != "application/json" {
-		input.Response = string(responseBody)
 		return
 	}
 
