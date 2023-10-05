@@ -10,6 +10,7 @@ var TestDatabase = database.NewGorm(config.TestDatabase)
 
 var tables = []string{
 	models.Pet{}.TableName(),
+	models.PetHost{}.TableName(),
 }
 
 func CleanDatabase() {
