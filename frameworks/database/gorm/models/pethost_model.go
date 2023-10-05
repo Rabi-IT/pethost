@@ -6,7 +6,7 @@ type PetHost struct {
 	TaxID          string `gorm:"not null"`
 	City           string `gorm:"not null"`
 	State          string `gorm:"not null"`
-	Complement     string
+	Complement     string `gorm:"not null"`
 	Phone          string `gorm:"not null"`
 	ZIP            string `gorm:"not null"`
 	SocialID       string `gorm:"not null"`
