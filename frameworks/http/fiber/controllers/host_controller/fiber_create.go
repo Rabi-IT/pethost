@@ -2,13 +2,13 @@ package host_controller
 
 import (
 	"pethost/frameworks/http/fiber/parser"
-	"pethost/usecases/host_case"
+	"pethost/usecases/pethost_case"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func (c PetHostController) Create(ctx *fiber.Ctx) error {
-	data := &host_case.CreateInput{}
+	data := &pethost_case.CreateInput{}
 	if err := parser.ParseBody(ctx, data); err != nil {
 		return ctx.JSON(err)
 	}
@@ -19,5 +19,5 @@ func (c PetHostController) Create(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.SendString(id)
+	return ctx.Status(201).SendString(id)
 }

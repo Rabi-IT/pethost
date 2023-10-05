@@ -2,39 +2,26 @@ package host_controller
 
 import (
 	database "pethost/frameworks/database/gorm"
-	"pethost/usecases/host_case"
+	"pethost/usecases/pethost_case"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func (c PetHostController) Paginate(ctx *fiber.Ctx) error {
-	page, err := strconv.Atoi(ctx.Query("Page"))
+	page, err := strconv.Atoi(ctx.Query("Page", "0"))
 	if err != nil {
 		return err
 	}
 
-	pageSize, err := strconv.Atoi(ctx.Query("PageSize"))
+	pageSize, err := strconv.Atoi(ctx.Query("PageSize", "10"))
 	if err != nil {
 		return err
 	}
 
-	ZIP := ctx.Query("ZIP")
-	Email := ctx.Query("Email")
-	Neighborhood := ctx.Query("Neighborhood")
-	Complement := ctx.Query("Complement")
-	Name := ctx.Query("Name")
-	City := ctx.Query("City")
-	State := ctx.Query("State")
-
-	filter := host_case.PaginateFilter{
-		ZIP:          &ZIP,
-		Email:        &Email,
-		Neighborhood: &Neighborhood,
-		Complement:   &Complement,
-		Name:         &Name,
-		City:         &City,
-		State:        &State,
+	filter := pethost_case.PaginateFilter{}
+	if err = ctx.QueryParser(&filter); err != nil {
+		return err
 	}
 
 	paginate := database.PaginateInput{

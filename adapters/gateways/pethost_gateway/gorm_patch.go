@@ -1,4 +1,4 @@
-package host_gateway
+package pethost_gateway
 
 import (
 	"pethost/frameworks/database/gorm/models"

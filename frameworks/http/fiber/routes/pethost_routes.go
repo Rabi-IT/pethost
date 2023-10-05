@@ -7,7 +7,7 @@ import (
 )
 
 func PetHost(app *fiber.App, c *host_controller.PetHostController) {
-	route := app.Group("/host")
+	route := app.Group("/pethost")
 	route.Get("/:id", c.GetByID)
 	route.Post("/", c.Create)
 	route.Delete("/", c.Delete)

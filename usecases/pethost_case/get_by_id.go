@@ -1,8 +1,8 @@
-package host_case
+package pethost_case
 
 import (
 	"context"
-	g "pethost/adapters/gateways/host_gateway"
+	g "pethost/adapters/gateways/pethost_gateway"
 )
 
 func (c PetHostCase) GetByID(ctx context.Context, id string) (*g.GetByIDOutput, error) {
