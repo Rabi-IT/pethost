@@ -1,13 +1,11 @@
 package host_controller
 
-import (
-	"pethost/usecases/host_case"
-)
+import "pethost/usecases/pethost_case"
 
 type PetHostController struct {
-	usecase host_case.PetHostCase
+	usecase *pethost_case.PetHostCase
 }
 
-func New(usecase host_case.PetHostCase) *PetHostController {
+func New(usecase *pethost_case.PetHostCase) *PetHostController {
 	return &PetHostController{usecase}
 }

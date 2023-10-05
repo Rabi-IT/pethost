@@ -1,4 +1,4 @@
-package host_case
+package pethost_case
 
 import (
 	"context"
