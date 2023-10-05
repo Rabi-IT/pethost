@@ -10,13 +10,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const baseURI = "/pethost"
+const baseURI = "/pethost/"
 
 func Test_Integration_should_create(t *testing.T) {
 	fixtures.CleanDatabase()
 
 	Body := pethost_case.CreateInput{
-		Name: "Pet",
+		Name:           "Name",
+		TaxID:          "TaxID",
+		City:           "City",
+		State:          "State",
+		Phone:          "Phone",
+		ZIP:            "ZIP",
+		SocialID:       "SocialID",
+		Email:          "Email",
+		EmergencyPhone: "EmergencyPhone",
+		Neighborhood:   "Neighborhood",
+		Street:         "Street",
+		Complement:     "Complement",
 	}
 
 	id := ""
@@ -38,7 +49,7 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	responseBody := pethost_gateway.GetByIDOutput{}
 
 	fixtures.Get(t, fixtures.GetInput{
-		URI:      "/pet/" + id,
+		URI:      baseURI + id,
 		Response: &responseBody,
 	})
 
@@ -94,7 +105,7 @@ func Test_Integration_should_be_able_to_paginate(t *testing.T) {
 func Test_Integration_should_be_able_to_update(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	id := fixtures.Pet.Create(t, nil)
+	id := fixtures.Pethost.Create(t, nil)
 
 	Body := pethost_case.PatchValues{
 		ZIP:            "NewZIP",
@@ -113,11 +124,11 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 
 	ok := fixtures.Patch(t, fixtures.PatchInput{
 		Body: Body,
-		URI:  "/pet/" + id,
+		URI:  baseURI + id,
 	})
 	require.True(t, ok == "OK")
 
-	found, statusCode := fixtures.Pet.GetByID(t, id)
+	found, statusCode := fixtures.Pethost.GetByID(t, id)
 	require.Equal(t, http.StatusOK, statusCode)
 
 	EXPECTED := pethost_gateway.GetByIDOutput{
@@ -138,21 +149,16 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 func Test_Integration_should_be_able_to_delete(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	id := fixtures.Pet.Create(t, nil)
-
-	Body := pethost_case.PatchValues{
-		Name: "NewName",
-	}
+	id := fixtures.Pethost.Create(t, nil)
 
 	respBody, statusCode := fixtures.Delete(t, fixtures.DeleteInput{
-		Body: Body,
-		URI:  "/pet/" + id,
+		URI: baseURI + id,
 	})
 
 	require.Equal(t, statusCode, http.StatusNoContent)
-	require.Equal(t, respBody, "")
+	require.Empty(t, respBody)
 
-	found, statusCode := fixtures.Pet.GetByID(t, id)
+	found, statusCode := fixtures.Pethost.GetByID(t, id)
 	require.Equal(t, statusCode, http.StatusNotFound)
 
 	EXPECTED := pethost_gateway.GetByIDOutput{}
