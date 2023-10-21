@@ -59,16 +59,6 @@ type ListOutput struct {
 	Species   string
 }
 
-type DeleteInput struct {
-	Weight    string
-	Species   string
-	Name      string
-	Breed     string
-	Size      string
-	Birthdate string
-	Gender    string
-}
-
 type GetByIDOutput struct {
 	Name      string
 	Breed     string
