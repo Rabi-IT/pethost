@@ -1,15 +1,18 @@
 package config
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 var (
-	Port               = os.Getenv("PORT")
+	Port               = requiredEnv("PORT")
 	ProductionDatabase = &DatabaseConfig{
-		Host:         os.Getenv("DATABASE_HOST"),
-		DatabaseName: os.Getenv("DATABASE_NAME"),
-		User:         os.Getenv("DATABASE_USER"),
-		Password:     os.Getenv("DATABASE_PASSWORD"),
-		Port:         os.Getenv("DATABASE_PORT"),
+		Host:         requiredEnv("DATABASE_HOST"),
+		DatabaseName: requiredEnv("DATABASE_NAME"),
+		User:         requiredEnv("DATABASE_USER"),
+		Password:     requiredEnv("DATABASE_PASSWORD"),
+		Port:         requiredEnv("DATABASE_PORT"),
 	}
 )
 
@@ -19,4 +22,14 @@ type DatabaseConfig struct {
 	Password     string
 	DatabaseName string
 	Port         string
+}
+
+func requiredEnv(key string) string {
+	value := os.Getenv("DATABASE_HOST")
+
+	if value == "" {
+		panic(fmt.Sprintf(`Err: missing environment variable: "%s"`, key))
+	}
+
+	return value
 }
