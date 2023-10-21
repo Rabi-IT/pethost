@@ -10,15 +10,7 @@ import (
 func main() {
 	server := http.New(fixtures.TestDatabase)
 
-	if err := fixtures.TestDatabase.CreateDatabase(); err != nil {
-		panic(err)
-	}
-
-	if err := fixtures.TestDatabase.Connect(); err != nil {
-		panic(err)
-	}
-
-	if err := fixtures.TestDatabase.Migrate(); err != nil {
+	if err := fixtures.TestDatabase.Start(); err != nil {
 		panic(err)
 	}
 
