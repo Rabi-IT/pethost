@@ -9,36 +9,8 @@ type Database struct {
 	mock.Mock
 }
 
-// Connect provides a mock function with given fields:
-func (_m *Database) Connect() error {
-	ret := _m.Called()
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func() error); ok {
-		r0 = rf()
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
-// CreateDatabase provides a mock function with given fields:
-func (_m *Database) CreateDatabase() error {
-	ret := _m.Called()
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func() error); ok {
-		r0 = rf()
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
-// Migrate provides a mock function with given fields:
-func (_m *Database) Migrate() error {
+// Start provides a mock function with given fields:
+func (_m *Database) Start() error {
 	ret := _m.Called()
 
 	var r0 error
