@@ -12,15 +12,7 @@ func main() {
 	time.Local = time.UTC
 
 	db := factories.NewProductionDatabase()
-	if err := db.CreateDatabase(); err != nil {
-		panic(err)
-	}
-
-	if err := db.Connect(); err != nil {
-		panic(err)
-	}
-
-	if err := db.Migrate(); err != nil {
+	if err := db.Start(); err != nil {
 		panic(err)
 	}
 

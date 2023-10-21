@@ -67,6 +67,18 @@ func (d *GormAdapter) CreateDatabase() error {
 	return nil
 }
 
+func (g *GormAdapter) Start() error {
+	if err := g.CreateDatabase(); err != nil {
+		return err
+	}
+
+	if err := g.Connect(); err != nil {
+		return err
+	}
+
+	return g.Migrate()
+}
+
 func parseDSN(d *config.DatabaseConfig) string {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s",
 		d.Host,
