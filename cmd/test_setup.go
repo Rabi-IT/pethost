@@ -14,5 +14,5 @@ func main() {
 		panic(err)
 	}
 
-	log.Fatal(server.Start(config.Port))
+	log.Fatal(server.Start(config.TestPort))
 }

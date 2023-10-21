@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var url = fmt.Sprintf("http://localhost:%s", config.Port)
+var url = fmt.Sprintf("http://localhost:%s", config.TestPort)
 
 type PostInput struct {
 	Body     any
