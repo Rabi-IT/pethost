@@ -1,7 +1,7 @@
 package tutor_controller
 
 import (
-	database "pethost/frameworks/database/gorm"
+	"pethost/adapters/database"
 	"pethost/usecases/tutor_case"
 	"strconv"
 

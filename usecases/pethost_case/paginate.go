@@ -2,8 +2,8 @@ package pethost_case
 
 import (
 	"context"
+	"pethost/adapters/database"
 	g "pethost/adapters/gateways/pethost_gateway"
-	database "pethost/frameworks/database/gorm"
 )
 
 type PaginateFilter struct {

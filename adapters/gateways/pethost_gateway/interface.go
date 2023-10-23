@@ -1,8 +1,6 @@
 package pethost_gateway
 
-import (
-	database "pethost/frameworks/database/gorm"
-)
+import "pethost/adapters/database"
 
 type PetHostGateway interface {
 	Create(input CreateInput) (string, error)
