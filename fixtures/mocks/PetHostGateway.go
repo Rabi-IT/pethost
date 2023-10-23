@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	gorm_adapter "pethost/frameworks/database/gorm"
+	database "pethost/adapters/database"
 
 	mock "github.com/stretchr/testify/mock"
 
@@ -90,15 +90,15 @@ func (_m *PetHostGateway) GetByID(id string) (*pethost_gateway.GetByIDOutput, er
 }
 
 // Paginate provides a mock function with given fields: filter, paginate
-func (_m *PetHostGateway) Paginate(filter pethost_gateway.PaginateFilter, paginate gorm_adapter.PaginateInput) (*pethost_gateway.PaginateOutput, error) {
+func (_m *PetHostGateway) Paginate(filter pethost_gateway.PaginateFilter, paginate database.PaginateInput) (*pethost_gateway.PaginateOutput, error) {
 	ret := _m.Called(filter, paginate)
 
 	var r0 *pethost_gateway.PaginateOutput
 	var r1 error
-	if rf, ok := ret.Get(0).(func(pethost_gateway.PaginateFilter, gorm_adapter.PaginateInput) (*pethost_gateway.PaginateOutput, error)); ok {
+	if rf, ok := ret.Get(0).(func(pethost_gateway.PaginateFilter, database.PaginateInput) (*pethost_gateway.PaginateOutput, error)); ok {
 		return rf(filter, paginate)
 	}
-	if rf, ok := ret.Get(0).(func(pethost_gateway.PaginateFilter, gorm_adapter.PaginateInput) *pethost_gateway.PaginateOutput); ok {
+	if rf, ok := ret.Get(0).(func(pethost_gateway.PaginateFilter, database.PaginateInput) *pethost_gateway.PaginateOutput); ok {
 		r0 = rf(filter, paginate)
 	} else {
 		if ret.Get(0) != nil {
@@ -106,7 +106,7 @@ func (_m *PetHostGateway) Paginate(filter pethost_gateway.PaginateFilter, pagina
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(pethost_gateway.PaginateFilter, gorm_adapter.PaginateInput) error); ok {
+	if rf, ok := ret.Get(1).(func(pethost_gateway.PaginateFilter, database.PaginateInput) error); ok {
 		r1 = rf(filter, paginate)
 	} else {
 		r1 = ret.Error(1)

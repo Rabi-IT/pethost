@@ -1,7 +1,7 @@
 package host_controller
 
 import (
-	database "pethost/frameworks/database/gorm"
+	"pethost/adapters/database"
 	"pethost/usecases/pethost_case"
 	"strconv"
 

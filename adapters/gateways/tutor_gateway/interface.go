@@ -1,8 +1,6 @@
 package tutor_gateway
 
-import (
-	database "pethost/frameworks/database/gorm"
-)
+import "pethost/adapters/database"
 
 type TutorGateway interface {
 	Create(input CreateInput) (string, error)

@@ -1,7 +1,8 @@
 package pethost_gateway
 
 import (
-	database "pethost/frameworks/database/gorm"
+	"pethost/adapters/database"
+	gorm_adapter "pethost/frameworks/database/gorm"
 	"pethost/frameworks/database/gorm/models"
 )
 
@@ -39,7 +40,7 @@ func (g GormPetHostGatewayAdapter) Paginate(filter PaginateFilter, paginate data
 		}, nil
 	}
 
-	database.Paginate(query, paginate)
+	gorm_adapter.Paginate(query, paginate)
 
 	result = query.Scan(&data)
 
