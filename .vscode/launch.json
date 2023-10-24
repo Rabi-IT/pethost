@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/test_setup.go"
+            "program": "${workspaceFolder}/cmd/test_setup/test_setup.go"
         }
     ]
 }
