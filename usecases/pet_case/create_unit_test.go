@@ -1,8 +1,8 @@
 package pet_case_test
 
 import (
-	"context"
 	"pethost/adapters/gateways/pet_gateway"
+	"pethost/fixtures"
 	"pethost/fixtures/mocks"
 	"pethost/usecases/pet_case"
 	"testing"
@@ -18,7 +18,7 @@ func makeSut(g pet_gateway.PetGateway) *pet_case.PetCase {
 func Test_Unit_Create__should_fail_if_name_is_empty(t *testing.T) {
 	sut := makeSut(nil)
 
-	_, err := sut.Create(context.Background(), &pet_case.CreateInput{
+	_, err := sut.Create(fixtures.DUMMY_CONTEXT, &pet_case.CreateInput{
 		Name:      "",
 		Breed:     "Breed",
 		Size:      "Size",
@@ -38,7 +38,7 @@ func Test_Unit_Create__should_not_fail_if_all_optional_fields_are_not_filled_in(
 	gateway.On("Create", mock.Anything).Return(expectedID, nil)
 	sut := pet_case.New(gateway)
 
-	id, err := sut.Create(context.Background(), &pet_case.CreateInput{
+	id, err := sut.Create(fixtures.DUMMY_CONTEXT, &pet_case.CreateInput{
 		Name:      "Name",
 		Breed:     "",
 		Size:      "",

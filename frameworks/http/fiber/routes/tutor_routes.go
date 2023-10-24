@@ -13,5 +13,4 @@ func Tutor(app *fiber.App, c *tutor_controller.TutorController) {
 	route.Get("/", c.List)
 	route.Patch("/:id", c.Patch)
 	route.Get("/:id", c.GetByID)
-	route.Post("/", c.Create)
 }

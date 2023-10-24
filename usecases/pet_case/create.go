@@ -1,8 +1,8 @@
 package pet_case
 
 import (
-	"context"
 	g "pethost/adapters/gateways/pet_gateway"
+	core_context "pethost/app_context"
 	"pethost/utils"
 )
 
@@ -16,7 +16,7 @@ type CreateInput struct {
 	Species   string
 }
 
-func (c PetCase) Create(ctx context.Context, input *CreateInput) (string, error) {
+func (c PetCase) Create(ctx *core_context.AppContext, input *CreateInput) (string, error) {
 	if err := utils.Validator.Struct(input); err != nil {
 		return "", err
 	}
@@ -29,5 +29,6 @@ func (c PetCase) Create(ctx context.Context, input *CreateInput) (string, error)
 		Gender:    input.Gender,
 		Weight:    input.Weight,
 		Species:   input.Species,
+		TutorID:   ctx.Session.UserID,
 	})
 }
