@@ -1,6 +1,7 @@
 package pet_controller
 
 import (
+	"pethost/app_context"
 	"pethost/usecases/pet_case"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,7 +13,7 @@ func (c PetController) Create(ctx *fiber.Ctx) error {
 		return ctx.JSON(err)
 	}
 
-	id, err := c.usecase.Create(ctx.Context(), data)
+	id, err := c.usecase.Create(app_context.New(ctx.Context()), data)
 
 	if err != nil {
 		return err

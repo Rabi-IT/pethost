@@ -13,7 +13,7 @@ type petFixture struct{}
 
 var Pet = petFixture{}
 
-func (petFixture) Create(t *testing.T, input *pet_case.CreateInput) string {
+func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string) string {
 	Body := input
 	if Body == nil {
 		Body = &pet_case.CreateInput{
@@ -32,6 +32,7 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput) string {
 		Body:     Body,
 		URI:      "/pet",
 		Response: &id,
+		Token:    token,
 	})
 
 	require.Equal(t, http.StatusCreated, statusCode)

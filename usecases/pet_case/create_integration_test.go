@@ -18,10 +18,12 @@ func Test_Integration_should_create(t *testing.T) {
 	}
 
 	id := ""
+	token := fixtures.Tutor.Login(t, nil)
 	statusCode := fixtures.Post(t, fixtures.PostInput{
 		Body:     Body,
 		URI:      "/pet",
 		Response: &id,
+		Token:    token,
 	})
 
 	require.Equal(t, http.StatusCreated, statusCode)
@@ -31,7 +33,8 @@ func Test_Integration_should_create(t *testing.T) {
 func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	id := fixtures.Pet.Create(t, nil)
+	token := fixtures.Tutor.Login(t, nil)
+	id := fixtures.Pet.Create(t, nil, token)
 
 	responseBody := pet_gateway.GetByIDOutput{}
 
@@ -56,7 +59,8 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 func Test_Integration_should_be_able_to_list(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	fixtures.Pet.Create(t, nil)
+	token := fixtures.Tutor.Login(t, nil)
+	fixtures.Pet.Create(t, nil, token)
 
 	responseBody := []pet_gateway.ListOutput{}
 
@@ -83,7 +87,8 @@ func Test_Integration_should_be_able_to_list(t *testing.T) {
 func Test_Integration_should_be_able_to_update(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	id := fixtures.Pet.Create(t, nil)
+	token := fixtures.Tutor.Login(t, nil)
+	id := fixtures.Pet.Create(t, nil, token)
 
 	Body := pet_case.PatchValues{
 		Name: "NewName",
@@ -114,7 +119,8 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 func Test_Integration_should_be_able_to_delete(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	id := fixtures.Pet.Create(t, nil)
+	token := fixtures.Tutor.Login(t, nil)
+	id := fixtures.Pet.Create(t, nil, token)
 
 	Body := pet_case.PatchValues{
 		Name: "NewName",

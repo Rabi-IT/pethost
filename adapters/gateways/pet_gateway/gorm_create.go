@@ -18,6 +18,7 @@ func (g *GormPetGatewayAdapter) Create(input CreateInput) (string, error) {
 		Size:      input.Size,
 		Birthdate: input.Birthdate,
 		Gender:    input.Gender,
+		TutorID:   input.TutorID,
 	})
 
 	return id, result.Error

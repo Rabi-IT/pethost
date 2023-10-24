@@ -18,13 +18,23 @@ type PostInput struct {
 	Body     any
 	URI      string
 	Response any
+	Token    string
 }
 
 func Post(t *testing.T, input PostInput) (statusCode int) {
 	b, err := json.Marshal(input.Body)
 	require.Nil(t, err)
 
-	resp, err := http.Post(url+input.URI, "application/json", bytes.NewReader(b))
+	req, err := http.NewRequest(http.MethodPost, url+input.URI, bytes.NewBuffer(b))
+	require.Nil(t, err)
+
+	req.Header.Set("Content-Type", "application/json")
+	if input.Token != "" {
+		req.Header.Set("Authorization", "Bearer "+input.Token)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	require.Nil(t, err)
 
 	statusCode = resp.StatusCode
