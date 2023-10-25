@@ -60,10 +60,19 @@ func Post(t *testing.T, input PostInput) (statusCode int) {
 type GetInput struct {
 	URI      string
 	Response any
+	Token    string
 }
 
 func Get(t *testing.T, input GetInput) (statusCode int) {
-	resp, err := http.Get(url + input.URI)
+	req, err := http.NewRequest(http.MethodGet, url+input.URI, nil)
+	require.Nil(t, err)
+
+	if input.Token != "" {
+		req.Header.Set("Authorization", "Bearer "+input.Token)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	require.Nil(t, err)
 
 	statusCode = resp.StatusCode
@@ -88,8 +97,9 @@ func Get(t *testing.T, input GetInput) (statusCode int) {
 }
 
 type PatchInput struct {
-	URI  string
-	Body any
+	URI   string
+	Body  any
+	Token string
 }
 
 func Patch(t *testing.T, input PatchInput) string {
@@ -100,6 +110,9 @@ func Patch(t *testing.T, input PatchInput) string {
 	require.Nil(t, err)
 
 	req.Header.Set("Content-Type", "application/json")
+	if input.Token != "" {
+		req.Header.Set("Authorization", "Bearer "+input.Token)
+	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -113,8 +126,9 @@ func Patch(t *testing.T, input PatchInput) string {
 }
 
 type DeleteInput struct {
-	URI  string
-	Body any
+	URI   string
+	Body  any
+	Token string
 }
 
 func Delete(t *testing.T, input DeleteInput) (string, int) {
@@ -125,6 +139,9 @@ func Delete(t *testing.T, input DeleteInput) (string, int) {
 	require.Nil(t, err)
 
 	req.Header.Set("Content-Type", "application/json")
+	if input.Token != "" {
+		req.Header.Set("Authorization", "Bearer "+input.Token)
+	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)

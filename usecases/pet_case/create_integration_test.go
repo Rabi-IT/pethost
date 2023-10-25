@@ -18,7 +18,7 @@ func Test_Integration_should_create(t *testing.T) {
 	}
 
 	id := ""
-	token := fixtures.Tutor.Login(t, nil)
+	token := fixtures.User.Login(t, nil)
 	statusCode := fixtures.Post(t, fixtures.PostInput{
 		Body:     Body,
 		URI:      "/pet",
@@ -33,15 +33,18 @@ func Test_Integration_should_create(t *testing.T) {
 func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	token := fixtures.Tutor.Login(t, nil)
+	token := fixtures.User.Login(t, nil)
 	id := fixtures.Pet.Create(t, nil, token)
 
 	responseBody := pet_gateway.GetByIDOutput{}
 
-	fixtures.Get(t, fixtures.GetInput{
+	statusCode := fixtures.Get(t, fixtures.GetInput{
 		URI:      "/pet/" + id,
 		Response: &responseBody,
+		Token:    token,
 	})
+
+	require.Equal(t, http.StatusOK, statusCode)
 
 	EXPECTED := pet_gateway.GetByIDOutput{
 		Name:      "Name",
@@ -59,7 +62,7 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 func Test_Integration_should_be_able_to_list(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	token := fixtures.Tutor.Login(t, nil)
+	token := fixtures.User.Login(t, nil)
 	fixtures.Pet.Create(t, nil, token)
 
 	responseBody := []pet_gateway.ListOutput{}
@@ -67,6 +70,7 @@ func Test_Integration_should_be_able_to_list(t *testing.T) {
 	fixtures.Get(t, fixtures.GetInput{
 		URI:      "/pet",
 		Response: &responseBody,
+		Token:    token,
 	})
 
 	EXPECTED := []pet_gateway.ListOutput{
@@ -87,7 +91,7 @@ func Test_Integration_should_be_able_to_list(t *testing.T) {
 func Test_Integration_should_be_able_to_update(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	token := fixtures.Tutor.Login(t, nil)
+	token := fixtures.User.Login(t, nil)
 	id := fixtures.Pet.Create(t, nil, token)
 
 	Body := pet_case.PatchValues{
@@ -95,12 +99,13 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 	}
 
 	ok := fixtures.Patch(t, fixtures.PatchInput{
-		Body: Body,
-		URI:  "/pet/" + id,
+		Body:  Body,
+		URI:   "/pet/" + id,
+		Token: token,
 	})
 	require.True(t, ok == "OK")
 
-	found, statusCode := fixtures.Pet.GetByID(t, id)
+	found, statusCode := fixtures.Pet.GetByID(t, id, token)
 	require.Equal(t, http.StatusOK, statusCode)
 
 	EXPECTED := pet_gateway.GetByIDOutput{
@@ -119,7 +124,7 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 func Test_Integration_should_be_able_to_delete(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	token := fixtures.Tutor.Login(t, nil)
+	token := fixtures.User.Login(t, nil)
 	id := fixtures.Pet.Create(t, nil, token)
 
 	Body := pet_case.PatchValues{
@@ -127,14 +132,15 @@ func Test_Integration_should_be_able_to_delete(t *testing.T) {
 	}
 
 	respBody, statusCode := fixtures.Delete(t, fixtures.DeleteInput{
-		Body: Body,
-		URI:  "/pet/" + id,
+		Body:  Body,
+		URI:   "/pet/" + id,
+		Token: token,
 	})
 
 	require.Equal(t, statusCode, http.StatusNoContent)
 	require.Equal(t, respBody, "")
 
-	found, statusCode := fixtures.Pet.GetByID(t, id)
+	found, statusCode := fixtures.Pet.GetByID(t, id, token)
 	require.Equal(t, statusCode, http.StatusNotFound)
 
 	EXPECTED := pet_gateway.GetByIDOutput{}
