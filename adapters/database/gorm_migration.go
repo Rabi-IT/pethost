@@ -7,7 +7,6 @@ import (
 func (d *GormAdapter) Migrate() error {
 	return d.Conn.AutoMigrate(
 		&models.Pet{},
-		&models.PetHost{},
-		&models.Tutor{},
+		&models.User{},
 	)
 }

@@ -29,6 +29,6 @@ func (c PetCase) Create(ctx *core_context.AppContext, input *CreateInput) (strin
 		Gender:    input.Gender,
 		Weight:    input.Weight,
 		Species:   input.Species,
-		TutorID:   ctx.Session.UserID,
+		UserID:    ctx.Session.UserID,
 	})
 }

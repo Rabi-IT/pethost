@@ -9,8 +9,8 @@ type Pet struct {
 	Size      string `gorm:"not null"`
 	Birthdate string `gorm:"not null"`
 	Gender    string `gorm:"not null"`
-	Tutor     Tutor
-	TutorID   string `gorm:"not null"`
+	User      User
+	UserID    string `gorm:"not null"`
 }
 
 func (m Pet) TableName() string {

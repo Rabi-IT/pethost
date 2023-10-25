@@ -9,7 +9,7 @@ type PetGateway interface {
 }
 
 type CreateInput struct {
-	TutorID   string
+	UserID    string
 	Species   string
 	Name      string
 	Breed     string

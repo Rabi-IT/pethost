@@ -41,12 +41,13 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string
 	return id
 }
 
-func (petFixture) GetByID(t *testing.T, id string) (pet_gateway.GetByIDOutput, int) {
+func (petFixture) GetByID(t *testing.T, id string, token string) (pet_gateway.GetByIDOutput, int) {
 	found := pet_gateway.GetByIDOutput{}
 
 	input := GetInput{
 		URI:      "/pet/" + id,
 		Response: &found,
+		Token:    token,
 	}
 
 	statusCode := Get(t, input)

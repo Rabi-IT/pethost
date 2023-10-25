@@ -31,13 +31,13 @@ func newFiber(d database.Database) HTTPServer {
 		Immutable: true,
 	})
 
-	tutorController := factories.NewTutor(d)
+	userController := factories.NewUser(d)
 	app.Use(
 		cors.New(),
 	).Use(
 		requestid.New(),
 	).Post(
-		"/tutor", tutorController.Create,
+		"/user", userController.Create,
 	).Use(
 		jwtware.New(jwtware.Config{
 			SigningKey: jwtware.SigningKey{Key: []byte(config.AuthSecret)},
@@ -47,8 +47,7 @@ func newFiber(d database.Database) HTTPServer {
 	)
 
 	routes.Pet(app, factories.NewPet(d))
-	routes.PetHost(app, factories.NewPetHost(d))
-	routes.Tutor(app, tutorController)
+	routes.User(app, userController)
 
 	return &fiberAdapter{app}
 }
