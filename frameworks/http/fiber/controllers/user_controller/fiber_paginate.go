@@ -2,6 +2,7 @@ package user_controller
 
 import (
 	"pethost/adapters/database"
+	"pethost/app_context"
 	"pethost/usecases/user_case"
 	"strconv"
 
@@ -29,7 +30,7 @@ func (c UserController) Paginate(ctx *fiber.Ctx) error {
 		PageSize: pageSize,
 	}
 
-	result, err := c.usecase.Paginate(ctx.Context(), filter, paginate)
+	result, err := c.usecase.Paginate(app_context.New(ctx.Context()), filter, paginate)
 
 	if err != nil {
 		return err

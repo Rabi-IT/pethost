@@ -50,12 +50,13 @@ func (userFixture) Create(t *testing.T, input *user_case.CreateInput) string {
 	return id
 }
 
-func (userFixture) GetByID(t *testing.T, id string) (user_gateway.GetByIDOutput, int) {
+func (userFixture) GetByID(t *testing.T, id string, token string) (user_gateway.GetByIDOutput, int) {
 	found := user_gateway.GetByIDOutput{}
 
 	input := GetInput{
 		URI:      User.URI + id,
 		Response: &found,
+		Token:    token,
 	}
 
 	statusCode := Get(t, input)
@@ -85,7 +86,7 @@ func (userFixture) Login(t *testing.T, id *string) string {
 
 		userId = User.Create(t, &user)
 	} else {
-		retrievedUser, statusCode := User.GetByID(t, *id)
+		retrievedUser, statusCode := User.GetByID(t, *id, SystemToken(t))
 		require.Equal(t, http.StatusOK, statusCode)
 		user.Name = retrievedUser.Name
 		user.Email = retrievedUser.Email

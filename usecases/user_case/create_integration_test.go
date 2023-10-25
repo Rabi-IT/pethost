@@ -46,9 +46,11 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 
 	responseBody := user_gateway.GetByIDOutput{}
 
+	token := fixtures.User.Login(t, nil)
 	fixtures.Get(t, fixtures.GetInput{
 		URI:      fixtures.User.URI + id,
 		Response: &responseBody,
+		Token:    token,
 	})
 
 	EXPECTED := user_gateway.GetByIDOutput{
@@ -69,7 +71,32 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	require.Equal(t, EXPECTED, responseBody)
 }
 
-func Test_Integration_should_be_able_to_paginate(t *testing.T) {
+func Test_Integration_should_not_be_able_to_paginate_if_is_user(t *testing.T) {
+	fixtures.CleanDatabase()
+
+	for i := 0; i < 5; i++ {
+		fixtures.User.Create(t, nil)
+	}
+
+	token := fixtures.User.Login(t, nil)
+	responseBody := user_gateway.PaginateOutput{}
+	statusCode := fixtures.Get(t, fixtures.GetInput{
+		URI:      fixtures.User.URI,
+		Response: &responseBody,
+		Token:    token,
+	})
+
+	require.Equal(t, http.StatusOK, statusCode)
+
+	EXPECTED := user_gateway.PaginateOutput{
+		Data:     []user_gateway.PaginateData{},
+		MaxPages: 0,
+	}
+
+	require.Equal(t, EXPECTED, responseBody)
+}
+
+func Test_Integration_should_be_able_to_paginate_if_is_backoffice(t *testing.T) {
 	fixtures.CleanDatabase()
 
 	for i := 0; i < 5; i++ {
@@ -80,6 +107,7 @@ func Test_Integration_should_be_able_to_paginate(t *testing.T) {
 	statusCode := fixtures.Get(t, fixtures.GetInput{
 		URI:      fixtures.User.URI,
 		Response: &responseBody,
+		Token:    fixtures.BackofficeToken(t),
 	})
 
 	require.Equal(t, http.StatusOK, statusCode)
@@ -120,13 +148,16 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 		Photo:          "NewPhoto",
 	}
 
+	token := fixtures.User.Login(t, &id)
 	ok := fixtures.Patch(t, fixtures.PatchInput{
-		Body: Body,
-		URI:  fixtures.User.URI + id,
+		Body:  Body,
+		URI:   fixtures.User.URI + id,
+		Token: token,
 	})
+
 	require.True(t, ok == "OK")
 
-	found, statusCode := fixtures.User.GetByID(t, id)
+	found, statusCode := fixtures.User.GetByID(t, id, token)
 	require.Equal(t, http.StatusOK, statusCode)
 
 	EXPECTED := user_gateway.GetByIDOutput{
@@ -152,14 +183,16 @@ func Test_Integration_should_be_able_to_delete(t *testing.T) {
 
 	id := fixtures.User.Create(t, nil)
 
+	token := fixtures.User.Login(t, &id)
 	respBody, statusCode := fixtures.Delete(t, fixtures.DeleteInput{
-		URI: fixtures.User.URI + id,
+		URI:   fixtures.User.URI + id,
+		Token: token,
 	})
 
 	require.Equal(t, statusCode, http.StatusNoContent)
 	require.Empty(t, respBody)
 
-	found, statusCode := fixtures.User.GetByID(t, id)
+	found, statusCode := fixtures.User.GetByID(t, id, token)
 	require.Equal(t, statusCode, http.StatusNotFound)
 
 	EXPECTED := user_gateway.GetByIDOutput{}

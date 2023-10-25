@@ -1,9 +1,9 @@
 package user_case
 
 import (
-	"context"
 	"pethost/adapters/database"
 	g "pethost/adapters/gateways/user_gateway"
+	"pethost/app_context"
 )
 
 type PaginateFilter struct {
@@ -21,7 +21,13 @@ type PaginateFilter struct {
 	Name           *string
 }
 
-func (c UserCase) Paginate(ctx context.Context, input PaginateFilter, paginate database.PaginateInput) (*g.PaginateOutput, error) {
+func (c UserCase) Paginate(ctx *app_context.AppContext, input PaginateFilter, paginate database.PaginateInput) (*g.PaginateOutput, error) {
+	if !ctx.Session.Role.IsBackoffice() {
+		return &g.PaginateOutput{
+			Data: []g.PaginateData{},
+		}, nil
+	}
+
 	return c.gateway.Paginate(g.PaginateFilter{
 		City:           input.City,
 		State:          input.State,
