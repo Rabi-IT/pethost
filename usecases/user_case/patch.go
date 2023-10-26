@@ -2,7 +2,7 @@ package user_case
 
 import (
 	"context"
-	g "pethost/adapters/gateways/user_gateway"
+	g "pethost/frameworks/database/gateways/user_gateway"
 )
 
 type PatchFilter struct {

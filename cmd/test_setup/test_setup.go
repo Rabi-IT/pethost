@@ -2,13 +2,13 @@ package main
 
 import (
 	"log"
-	"pethost/adapters/http"
 	"pethost/config"
 	"pethost/fixtures"
+	"pethost/frameworks/http/fiber_adapter"
 )
 
 func main() {
-	server := http.New(fixtures.TestDatabase)
+	server := fiber_adapter.New(fixtures.TestDatabase)
 
 	if err := fixtures.TestDatabase.Start(); err != nil {
 		panic(err)

@@ -1,12 +1,12 @@
 package fixtures
 
 import (
-	"pethost/adapters/database"
 	"pethost/config"
-	"pethost/frameworks/database/gorm/models"
+	"pethost/frameworks/database/gorm_adapter"
+	"pethost/frameworks/database/gorm_adapter/models"
 )
 
-var TestDatabase = database.NewGorm(config.TestDatabase)
+var TestDatabase = gorm_adapter.New(config.TestDatabase)
 
 var tables = []string{
 	models.Pet{}.TableName(),
@@ -14,15 +14,19 @@ var tables = []string{
 }
 
 func CleanDatabase() {
-	if TestDatabase.Conn == nil {
-		if err := TestDatabase.Connect(); err != nil {
+	gormDatabase, ok := TestDatabase.(*gorm_adapter.GormAdapter)
+	if !ok {
+		panic(gormDatabase)
+	}
+
+	if gormDatabase.Conn == nil {
+		if err := gormDatabase.Connect(); err != nil {
 			panic(err)
 		}
 	}
 
-	testConn := TestDatabase.Conn
 	for _, table := range tables {
-		if err := testConn.Exec("TRUNCATE " + table + " CASCADE").Error; err != nil {
+		if err := gormDatabase.Conn.Exec("TRUNCATE " + table + " CASCADE").Error; err != nil {
 			panic(err)
 		}
 	}

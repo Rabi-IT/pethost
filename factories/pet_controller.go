@@ -1,20 +1,21 @@
 package factories
 
 import (
-	"pethost/adapters/database"
-	g "pethost/adapters/gateways/pet_gateway"
-	c "pethost/frameworks/http/fiber/controllers/pet_controller"
+	"pethost/frameworks/database"
+	"pethost/frameworks/database/gateways/pet_gateway"
+	"pethost/frameworks/database/gorm_adapter"
+	"pethost/frameworks/http/controllers/pet_controller"
 
 	"pethost/usecases/pet_case"
 )
 
-func NewPet(d database.Database) *c.PetController {
-	DB, ok := d.(*database.GormAdapter)
+func NewPet(d database.Database) *pet_controller.PetController {
+	DB, ok := d.(*gorm_adapter.GormAdapter)
 	if !ok {
 		panic(ErrDatabaseAdapter)
 	}
 
-	gateway := &g.GormPetGatewayAdapter{DB: DB}
+	gateway := &pet_gateway.GormPetGatewayAdapter{DB: DB}
 	usecase := pet_case.New(gateway)
-	return c.New(usecase)
+	return pet_controller.New(usecase)
 }

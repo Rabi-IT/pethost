@@ -1,8 +1,8 @@
 package pet_case
 
 import (
-	g "pethost/adapters/gateways/pet_gateway"
 	core_context "pethost/app_context"
+	g "pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/utils"
 )
 

@@ -2,8 +2,8 @@ package user_case_test
 
 import (
 	"net/http"
-	"pethost/adapters/gateways/user_gateway"
 	"pethost/fixtures"
+	"pethost/frameworks/database/gateways/user_gateway"
 	"pethost/usecases/user_case"
 	"testing"
 

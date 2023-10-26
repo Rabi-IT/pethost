@@ -2,8 +2,8 @@ package fixtures
 
 import (
 	"net/http"
-	"pethost/adapters/gateways/user_gateway"
 	"pethost/config"
+	"pethost/frameworks/database/gateways/user_gateway"
 	"pethost/usecases/user_case"
 	"testing"
 

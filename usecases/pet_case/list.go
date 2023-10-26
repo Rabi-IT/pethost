@@ -2,7 +2,7 @@ package pet_case
 
 import (
 	"context"
-	g "pethost/adapters/gateways/pet_gateway"
+	g "pethost/frameworks/database/gateways/pet_gateway"
 )
 
 type ListInput struct {
