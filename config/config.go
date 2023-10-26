@@ -4,6 +4,7 @@ import "os"
 
 var (
 	Port               = os.Getenv("PORT")
+	AuthSecret         = os.Getenv("AUTH_SECRET")
 	ProductionDatabase = &DatabaseConfig{
 		Host:         os.Getenv("DATABASE_HOST"),
 		DatabaseName: os.Getenv("DATABASE_NAME"),
