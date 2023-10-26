@@ -11,6 +11,9 @@ jobs:
   Test:
     runs-on: ubuntu-latest
     container: golang:1.21.0
+    env:
+      PORT: 3000
+      TEST_DATABASE_HOST: postgres
 
     services:
       postgres:
@@ -29,14 +32,8 @@ jobs:
       - name: Fetch Repository
         uses: actions/checkout@v3
 
-      - name: Install deps
-        run: go get
-
       - name: Run Test
-        env:
-          PORT: 3000
-          TEST_DATABASE_HOST: postgres
         run: |
-          go run cmd/test_setup.go &
+          go run cmd/test_setup/test_setup.go &
           sleep 5
-          go test ./... -p 1 -v
+          go run gotest.tools/gotestsum@latest --format testname -- ./... -p 1 -v
