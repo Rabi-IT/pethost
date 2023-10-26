@@ -2,21 +2,22 @@ package main
 
 import (
 	"log"
-	"pethost/adapters/http"
 	"pethost/config"
-	"pethost/factories"
+	"pethost/frameworks/database/gorm_adapter"
+	"pethost/frameworks/http/fiber_adapter"
 	"time"
 )
 
 func main() {
 	time.Local = time.UTC
 
-	db := factories.NewProductionDatabase()
+	db := gorm_adapter.New(config.ProductionDatabase)
+
 	if err := db.Start(); err != nil {
 		panic(err)
 	}
 
-	httpServer := http.New(db)
+	httpServer := fiber_adapter.New(db)
 
 	log.Fatal(httpServer.Start(config.Port))
 }

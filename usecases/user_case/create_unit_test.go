@@ -2,8 +2,8 @@ package user_case_test
 
 import (
 	"context"
-	"pethost/adapters/gateways/user_gateway"
 	"pethost/fixtures/mocks"
+	"pethost/frameworks/database/gateways/user_gateway"
 	"pethost/usecases/user_case"
 	"strings"
 	"testing"

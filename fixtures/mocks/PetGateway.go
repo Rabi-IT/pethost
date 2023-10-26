@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	pet_gateway "pethost/adapters/gateways/pet_gateway"
+	pet_gateway "pethost/frameworks/database/gateways/pet_gateway"
 
 	mock "github.com/stretchr/testify/mock"
 )

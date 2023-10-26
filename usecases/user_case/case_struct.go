@@ -1,6 +1,6 @@
 package user_case
 
-import g "pethost/adapters/gateways/user_gateway"
+import g "pethost/frameworks/database/gateways/user_gateway"
 
 type UserCase struct {
 	gateway g.UserGateway

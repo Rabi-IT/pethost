@@ -2,7 +2,7 @@ package fixtures
 
 import (
 	"net/http"
-	"pethost/adapters/gateways/pet_gateway"
+	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/usecases/pet_case"
 	"testing"
 

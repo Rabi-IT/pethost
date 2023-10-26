@@ -1,9 +1,9 @@
 package user_case
 
 import (
-	"pethost/adapters/database"
-	g "pethost/adapters/gateways/user_gateway"
 	"pethost/app_context"
+	"pethost/frameworks/database"
+	g "pethost/frameworks/database/gateways/user_gateway"
 )
 
 type PaginateFilter struct {

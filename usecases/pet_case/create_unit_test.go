@@ -1,9 +1,9 @@
 package pet_case_test
 
 import (
-	"pethost/adapters/gateways/pet_gateway"
 	"pethost/fixtures"
 	"pethost/fixtures/mocks"
+	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/usecases/pet_case"
 	"testing"
 
