@@ -35,6 +35,7 @@ func (userFixture) Create(t *testing.T, input *user_case.CreateInput) string {
 			Neighborhood:   "Neighborhood",
 			Street:         "Street",
 			Complement:     "Complement",
+			IsHost:         true,
 		}
 	}
 

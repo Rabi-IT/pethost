@@ -20,6 +20,7 @@ type CreateInput struct {
 	Neighborhood   string `validate:"required"`
 	Street         string `validate:"required"`
 	Complement     string
+	IsHost         bool
 }
 
 func (c UserCase) Create(ctx context.Context, input *CreateInput) (string, error) {
@@ -41,5 +42,6 @@ func (c UserCase) Create(ctx context.Context, input *CreateInput) (string, error
 		EmergencyPhone: input.EmergencyPhone,
 		Neighborhood:   input.Neighborhood,
 		Name:           input.Name,
+		IsHost:         input.IsHost,
 	})
 }

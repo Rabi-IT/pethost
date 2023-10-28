@@ -26,6 +26,8 @@ func Test_Integration_should_create(t *testing.T) {
 		Neighborhood:   "Neighborhood",
 		Street:         "Street",
 		Complement:     "Complement",
+		Photo:          "Photo",
+		IsHost:         true,
 	}
 
 	id := ""
@@ -66,6 +68,7 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 		Street:         "Street",
 		Complement:     "Complement",
 		EmergencyPhone: "EmergencyPhone",
+		IsHost:         true,
 	}
 
 	require.Equal(t, EXPECTED, responseBody)
@@ -173,6 +176,7 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 		Complement:     "NewComplement",
 		Name:           "NewName",
 		Photo:          "NewPhoto",
+		IsHost:         true,
 	}
 
 	require.Equal(t, EXPECTED, found)

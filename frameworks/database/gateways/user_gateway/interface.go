@@ -24,6 +24,8 @@ type CreateInput struct {
 	Name           string
 	Email          string
 	Neighborhood   string
+
+	IsHost bool
 }
 
 type GetByIDOutput struct {
@@ -39,6 +41,7 @@ type GetByIDOutput struct {
 	Street         string
 	Complement     string
 	EmergencyPhone string
+	IsHost         bool
 }
 
 type PatchFilter struct {

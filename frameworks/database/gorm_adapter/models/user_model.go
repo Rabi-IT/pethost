@@ -15,6 +15,7 @@ type User struct {
 	State          string
 	ZIP            string
 	Neighborhood   string
+	IsHost         bool
 }
 
 func (m User) TableName() string {

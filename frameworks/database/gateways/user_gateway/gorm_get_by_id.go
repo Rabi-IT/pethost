@@ -29,6 +29,7 @@ func (g GormUserGatewayAdapter) GetByID(id string) (*GetByIDOutput, error) {
 		EmergencyPhone: output.EmergencyPhone,
 		Name:           output.Name,
 		Email:          output.Email,
+		IsHost:         output.IsHost,
 	}
 
 	return &adapted, nil
