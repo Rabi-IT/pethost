@@ -41,13 +41,7 @@ type PatchValues struct {
 }
 
 type ListInput struct {
-	Name      *string
-	Breed     *string
-	Size      *string
-	Birthdate *string
-	Gender    *string
-	Weight    *string
-	Species   *string
+	TutorID *string
 }
 
 type ListOutput struct {

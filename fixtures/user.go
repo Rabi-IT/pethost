@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"pethost/config"
 	"pethost/frameworks/database/gateways/user_gateway"
+	"pethost/usecases/auth_case/role"
 	"pethost/usecases/user_case"
 	"testing"
 
@@ -97,6 +98,7 @@ func (userFixture) Login(t *testing.T, id *string) string {
 		"user_id": userId,
 		"name":    user.Name,
 		"email":   user.Email,
+		"role":    role.User,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

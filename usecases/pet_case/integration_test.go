@@ -30,6 +30,39 @@ func Test_Integration_should_create(t *testing.T) {
 	require.NotEmpty(t, id)
 }
 
+func Test_Integration_should_not_be_able_to_create_pet_to_another_user(t *testing.T) {
+	fixtures.CleanDatabase()
+
+	user1 := fixtures.User.Create(t, nil)
+	user2 := fixtures.User.Create(t, nil)
+	Body := map[string]string{
+		"name":    "Pet Name",
+		"tutorId": user2,
+	}
+
+	id := ""
+	tokenUser1 := fixtures.User.Login(t, &user1)
+	statusCode := fixtures.Post(t, fixtures.PostInput{
+		Body:     Body,
+		URI:      "/pet",
+		Response: &id,
+		Token:    tokenUser1,
+	})
+
+	require.Equal(t, http.StatusCreated, statusCode)
+	require.NotEmpty(t, id)
+
+	petsUser1, statusCode := fixtures.Pet.List(t, tokenUser1)
+	require.Equal(t, http.StatusOK, statusCode)
+	expected := []pet_gateway.ListOutput{{Name: "Pet Name"}}
+	require.Equal(t, expected, petsUser1)
+
+	tokenUser2 := fixtures.User.Login(t, &user2)
+	petsUser2, statusCode := fixtures.Pet.List(t, tokenUser2)
+	require.Equal(t, http.StatusOK, statusCode)
+	require.Empty(t, petsUser2)
+}
+
 func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	fixtures.CleanDatabase()
 

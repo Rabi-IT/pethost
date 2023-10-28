@@ -9,9 +9,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type petFixture struct{}
+type petFixture struct {
+	URI string
+}
 
-var Pet = petFixture{}
+var Pet = petFixture{"/pet/"}
 
 func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string) string {
 	Body := input
@@ -30,7 +32,7 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string
 	id := ""
 	statusCode := Post(t, PostInput{
 		Body:     Body,
-		URI:      "/pet",
+		URI:      Pet.URI,
 		Response: &id,
 		Token:    token,
 	})
@@ -45,7 +47,21 @@ func (petFixture) GetByID(t *testing.T, id string, token string) (pet_gateway.Ge
 	found := pet_gateway.GetByIDOutput{}
 
 	input := GetInput{
-		URI:      "/pet/" + id,
+		URI:      Pet.URI + id,
+		Response: &found,
+		Token:    token,
+	}
+
+	statusCode := Get(t, input)
+
+	return found, statusCode
+}
+
+func (petFixture) List(t *testing.T, token string) ([]pet_gateway.ListOutput, int) {
+	found := []pet_gateway.ListOutput{}
+
+	input := GetInput{
+		URI:      Pet.URI,
 		Response: &found,
 		Token:    token,
 	}
