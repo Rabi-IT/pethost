@@ -5,7 +5,7 @@ import (
 )
 
 func (g GormPetGatewayAdapter) List(filter ListInput) ([]ListOutput, error) {
-	query := g.DB.Conn.Model(&models.Pet{}).Debug()
+	query := g.DB.Conn.Model(&models.Pet{})
 
 	if filter.TutorID != nil {
 		query = query.Where("user_id = ?", filter.TutorID)
