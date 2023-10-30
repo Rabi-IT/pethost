@@ -51,6 +51,7 @@ func newFiber(d database.Database) http.HTTPServer {
 		auth_controller.Session,
 	)
 
+	routes.Preference(app, factories.NewPreference(d))
 	routes.Pet(app, factories.NewPet(d))
 	routes.User(app, userController)
 

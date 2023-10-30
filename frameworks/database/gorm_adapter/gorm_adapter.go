@@ -24,6 +24,7 @@ func (d *GormAdapter) Migrate() error {
 	return d.Conn.AutoMigrate(
 		&models.Pet{},
 		&models.User{},
+		&models.Preference{},
 	)
 }
 
