@@ -24,8 +24,7 @@ type CreateInput struct {
 	Name           string
 	Email          string
 	Neighborhood   string
-
-	IsHost bool
+	IsHost         bool
 }
 
 type GetByIDOutput struct {
