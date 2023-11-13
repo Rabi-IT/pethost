@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/usecases/pet_case"
+	"pethost/usecases/pet_case/pet"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -34,7 +35,7 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string
 			Name:      "Name",
 			Breed:     "Breed",
 			Birthdate: "Birthdate",
-			Gender:    "Gender",
+			Gender:    pet.Male,
 			Weight:    Pet.MediumPet,
 			Species:   "Species",
 			Neutered:  true,

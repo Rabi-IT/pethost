@@ -48,7 +48,7 @@ func Test_Unit(t *testing.T) {
 		Name:      "A beautyful name",
 		Breed:     "A great breed",
 		Birthdate: "Today",
-		Gender:    string(pet.Male),
+		Gender:    pet.Male,
 		Weight:    fixtures.Preference.AllPetWeight,
 		Species:   string(pet.Dog),
 		Neutered:  true,

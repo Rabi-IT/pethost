@@ -1,5 +1,7 @@
 package pet_gateway
 
+import "pethost/usecases/pet_case/pet"
+
 type PetGateway interface {
 	Create(input CreateInput) (string, error)
 	Patch(filter PatchFilter, values PatchValues) (bool, error)
@@ -14,7 +16,7 @@ type CreateInput struct {
 	Name      string
 	Breed     string
 	Birthdate string
-	Gender    string
+	Gender    pet.Gender
 	Weight    uint8
 	Neutered  bool
 }
@@ -25,7 +27,7 @@ type PatchFilter struct {
 	Name      *string
 	Breed     *string
 	Birthdate *string
-	Gender    *string
+	Gender    *pet.Gender
 	Weight    *uint8
 }
 
@@ -34,8 +36,9 @@ type PatchValues struct {
 	Name      string
 	Breed     string
 	Birthdate string
-	Gender    string
+	Gender    pet.Gender
 	Weight    uint8
+	Neutered  *bool
 }
 
 type ListInput struct {
@@ -46,7 +49,7 @@ type ListOutput struct {
 	Name      string
 	Breed     string
 	Birthdate string
-	Gender    string
+	Gender    pet.Gender
 	Weight    uint8
 	Species   string
 }
@@ -55,7 +58,7 @@ type GetByIDOutput struct {
 	Name      string
 	Breed     string
 	Birthdate string
-	Gender    string
+	Gender    pet.Gender
 	Weight    uint8
 	Species   string
 	Neutered  bool

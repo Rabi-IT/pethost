@@ -3,6 +3,7 @@ package pet_case
 import (
 	core_context "pethost/app_context"
 	g "pethost/frameworks/database/gateways/pet_gateway"
+	"pethost/usecases/pet_case/pet"
 	"pethost/utils"
 )
 
@@ -10,7 +11,7 @@ type CreateInput struct {
 	Name      string `validate:"required"`
 	Breed     string
 	Birthdate string
-	Gender    string
+	Gender    pet.Gender
 	Weight    uint8
 	Species   string
 	Neutered  bool
