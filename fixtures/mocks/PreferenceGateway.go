@@ -37,6 +37,32 @@ func (_m *PreferenceGateway) Create(input preference_gateway.CreateInput) (strin
 	return r0, r1
 }
 
+// GetByFilter provides a mock function with given fields: filter
+func (_m *PreferenceGateway) GetByFilter(filter *preference_gateway.GetByFilterInput) (*preference_gateway.GetByFilterOutput, error) {
+	ret := _m.Called(filter)
+
+	var r0 *preference_gateway.GetByFilterOutput
+	var r1 error
+	if rf, ok := ret.Get(0).(func(*preference_gateway.GetByFilterInput) (*preference_gateway.GetByFilterOutput, error)); ok {
+		return rf(filter)
+	}
+	if rf, ok := ret.Get(0).(func(*preference_gateway.GetByFilterInput) *preference_gateway.GetByFilterOutput); ok {
+		r0 = rf(filter)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*preference_gateway.GetByFilterOutput)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(*preference_gateway.GetByFilterInput) error); ok {
+		r1 = rf(filter)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // NewPreferenceGateway creates a new instance of PreferenceGateway. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewPreferenceGateway(t interface {

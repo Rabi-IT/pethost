@@ -15,7 +15,12 @@ func NewPet(d database.Database) *pet_controller.PetController {
 		panic(ErrDatabaseAdapter)
 	}
 
+	usecase := newPetCase(DB)
+	return pet_controller.New(usecase)
+}
+
+func newPetCase(DB *gorm_adapter.GormAdapter) *pet_case.PetCase {
 	gateway := &pet_gateway.GormPetGatewayAdapter{DB: DB}
 	usecase := pet_case.New(gateway)
-	return pet_controller.New(usecase)
+	return usecase
 }

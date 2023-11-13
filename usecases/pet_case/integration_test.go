@@ -14,7 +14,8 @@ func Test_Integration_should_create(t *testing.T) {
 	fixtures.CleanDatabase()
 
 	Body := pet_case.CreateInput{
-		Name: "Pet",
+		Name:     "Pet",
+		Neutered: true,
 	}
 
 	id := ""
@@ -82,11 +83,11 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	EXPECTED := pet_gateway.GetByIDOutput{
 		Name:      "Name",
 		Breed:     "Breed",
-		Size:      "Size",
 		Birthdate: "Birthdate",
 		Gender:    "Gender",
-		Weight:    "Weight",
+		Weight:    fixtures.Pet.MediumPet,
 		Species:   "Species",
+		Neutered:  true,
 	}
 
 	require.Equal(t, EXPECTED, responseBody)
@@ -110,10 +111,9 @@ func Test_Integration_should_be_able_to_list(t *testing.T) {
 		{
 			Name:      "Name",
 			Breed:     "Breed",
-			Size:      "Size",
 			Birthdate: "Birthdate",
 			Gender:    "Gender",
-			Weight:    "Weight",
+			Weight:    fixtures.Pet.MediumPet,
 			Species:   "Species",
 		},
 	}
@@ -131,12 +131,12 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 		Name: "NewName",
 	}
 
-	ok := fixtures.Patch(t, fixtures.PatchInput{
+	statusCode := fixtures.Patch(t, fixtures.PatchInput{
 		Body:  Body,
 		URI:   "/pet/" + id,
 		Token: token,
 	})
-	require.True(t, ok == "OK")
+	require.Equal(t, http.StatusOK, statusCode)
 
 	found, statusCode := fixtures.Pet.GetByID(t, id, token)
 	require.Equal(t, http.StatusOK, statusCode)
@@ -144,11 +144,11 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 	EXPECTED := pet_gateway.GetByIDOutput{
 		Name:      "NewName",
 		Breed:     "Breed",
-		Size:      "Size",
 		Birthdate: "Birthdate",
 		Gender:    "Gender",
-		Weight:    "Weight",
+		Weight:    fixtures.Pet.MediumPet,
 		Species:   "Species",
+		Neutered:  true,
 	}
 
 	require.Equal(t, EXPECTED, found)

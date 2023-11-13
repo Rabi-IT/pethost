@@ -15,7 +15,12 @@ func NewPreference(d database.Database) *c.PreferenceController {
 		panic(ErrDatabaseAdapter)
 	}
 
+	usecase := newPreferenceCase(DB)
+	return c.New(usecase)
+}
+
+func newPreferenceCase(DB *gorm_adapter.GormAdapter) *preference_case.PreferenceCase {
 	gateway := &g.GormPreferenceGatewayAdapter{DB: DB}
 	usecase := preference_case.New(gateway)
-	return c.New(usecase)
+	return usecase
 }

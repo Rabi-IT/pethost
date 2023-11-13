@@ -15,10 +15,10 @@ func (g *GormPetGatewayAdapter) Create(input CreateInput) (string, error) {
 		Species:   input.Species,
 		Name:      input.Name,
 		Breed:     input.Breed,
-		Size:      input.Size,
 		Birthdate: input.Birthdate,
 		Gender:    input.Gender,
 		UserID:    input.UserID,
+		Neutered:  input.Neutered,
 	})
 
 	return id, result.Error

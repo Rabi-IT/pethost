@@ -34,5 +34,6 @@ func (c PreferenceCase) Create(ctx *app_context.AppContext, input *CreateInput) 
 		AcceptPuppies:           *input.AcceptPuppies,
 		AcceptMales:             *input.AcceptMales,
 		PetWeight:               input.PetWeight,
+		UserID:                  ctx.Session.UserID,
 	})
 }

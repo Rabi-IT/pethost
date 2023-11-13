@@ -9,31 +9,11 @@ import (
 func (g GormScheduleGatewayAdapter) Paginate(filter PaginateFilter, paginate database.PaginateInput) (*PaginateOutput, error) {
 	data := []PaginateData{}
 
-	query := g.DB.Conn.Model(&models.Schedule{})
-
-	if filter.TutorID != nil {
-		query = query.Where("tutor_id = ?", filter.TutorID)
-	}
-
-	if filter.HostID != nil {
-		query = query.Where("host_id = ?", filter.HostID)
-	}
-
-	if filter.Date != nil {
-		query = query.Where("date = ?", filter.Date)
-	}
-
-	if filter.PetID != nil {
-		query = query.Where("pet_id = ?", filter.PetID)
-	}
-
-	if filter.Status != nil {
-		query = query.Where("status = ?", filter.Status)
-	}
-
-	if filter.Notes != nil {
-		query = query.Where("notes = ?", filter.Notes)
-	}
+	query := g.DB.Conn.Model(&models.Schedule{}).Where(
+		"status = ?", filter.Status,
+	).Where(
+		"host_id = ?", filter.HostID,
+	)
 
 	var count int64
 	result := query.Count(&count)

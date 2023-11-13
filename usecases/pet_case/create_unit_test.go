@@ -21,10 +21,9 @@ func Test_Unit_Create__should_fail_if_name_is_empty(t *testing.T) {
 	_, err := sut.Create(fixtures.DUMMY_CONTEXT, &pet_case.CreateInput{
 		Name:      "",
 		Breed:     "Breed",
-		Size:      "Size",
 		Birthdate: "Birthdate",
 		Gender:    "Gender",
-		Weight:    "Weight",
+		Weight:    fixtures.Preference.AllPetWeight,
 		Species:   "Species",
 	})
 
@@ -41,10 +40,9 @@ func Test_Unit_Create__should_not_fail_if_all_optional_fields_are_not_filled_in(
 	id, err := sut.Create(fixtures.DUMMY_CONTEXT, &pet_case.CreateInput{
 		Name:      "Name",
 		Breed:     "",
-		Size:      "",
 		Birthdate: "",
 		Gender:    "",
-		Weight:    "",
+		Weight:    fixtures.Preference.AllPetWeight,
 		Species:   "",
 	})
 
