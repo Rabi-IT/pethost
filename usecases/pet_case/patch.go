@@ -3,13 +3,14 @@ package pet_case
 import (
 	"context"
 	g "pethost/frameworks/database/gateways/pet_gateway"
+	"pethost/usecases/pet_case/pet"
 )
 
 type PatchFilter struct {
 	ID        *string
 	Breed     *string
 	Birthdate *string
-	Gender    *string
+	Gender    *pet.Gender
 	Weight    *uint8
 	Species   *string
 	Name      *string
@@ -18,10 +19,11 @@ type PatchFilter struct {
 type PatchValues struct {
 	Breed     string
 	Birthdate string
-	Gender    string
+	Gender    pet.Gender
 	Weight    uint8
 	Species   string
 	Name      string
+	Neutered  *bool
 }
 
 func (c PetCase) Patch(ctx context.Context, filter PatchFilter, values PatchValues) (bool, error) {
@@ -41,5 +43,6 @@ func (c PetCase) Patch(ctx context.Context, filter PatchFilter, values PatchValu
 			Weight:    values.Weight,
 			Species:   values.Species,
 			Name:      values.Name,
+			Neutered:  values.Neutered,
 		})
 }

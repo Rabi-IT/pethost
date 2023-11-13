@@ -5,6 +5,7 @@ import (
 	"pethost/fixtures"
 	"pethost/frameworks/database/gateways/schedule_gateway"
 	"pethost/usecases/pet_case"
+	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/preference_case"
 	"pethost/usecases/schedule_case"
 	"pethost/usecases/schedule_case/schedule_status"
@@ -70,7 +71,7 @@ func Test_Integration_Create(t *testing.T) {
 				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
 					OnlyVaccinated:          True(),
 					AcceptElderly:           True(),
-					AcceptOnlyNeuteredMales: True(),
+					AcceptOnlyNeuteredMales: False(),
 					AcceptFemales:           True(),
 					DaysOfMonth:             from1To5,
 					AcceptFemaleInHeat:      True(),
@@ -113,7 +114,7 @@ func Test_Integration_Create(t *testing.T) {
 				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
 					OnlyVaccinated:          True(),
 					AcceptElderly:           True(),
-					AcceptOnlyNeuteredMales: True(),
+					AcceptOnlyNeuteredMales: False(),
 					AcceptFemales:           True(),
 					DaysOfMonth:             from1To5,
 					AcceptFemaleInHeat:      True(),
@@ -155,7 +156,7 @@ func Test_Integration_Create(t *testing.T) {
 				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
 					OnlyVaccinated:          True(),
 					AcceptElderly:           True(),
-					AcceptOnlyNeuteredMales: True(),
+					AcceptOnlyNeuteredMales: False(),
 					AcceptFemales:           True(),
 					DaysOfMonth:             fixtures.Preference.AllDaysOfMonth,
 					AcceptFemaleInHeat:      True(),
@@ -194,7 +195,7 @@ func Test_Integration_Create(t *testing.T) {
 				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
 					OnlyVaccinated:          True(),
 					AcceptElderly:           True(),
-					AcceptOnlyNeuteredMales: True(),
+					AcceptOnlyNeuteredMales: False(),
 					AcceptFemales:           True(),
 					DaysOfMonth:             fixtures.Preference.AllDaysOfMonth,
 					AcceptFemaleInHeat:      True(),
@@ -214,6 +215,49 @@ func Test_Integration_Create(t *testing.T) {
 						PetID:        scenario.PetID,
 						HostID:       scenario.HostID,
 						MonthYear:    time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
+						DaysOfMonth:  fixtures.Preference.AllDaysOfMonth,
+						FemaleInHeat: nil,
+					},
+					scenario.TutorToken,
+				)
+
+				return scenario
+			},
+			expected: func(scenario fixtures.CreateDefaultOutput) schedule_gateway.PaginateData {
+				return schedule_gateway.PaginateData{}
+			},
+		},
+
+		{
+			title: "should not schedule if pet is non-neutered male and host only accepts neutered pets",
+			seed: func() fixtures.CreateDefaultOutput {
+				ACCEPT_ONLY_NEUTERED_MALES := True()
+				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
+					OnlyVaccinated:          True(),
+					AcceptElderly:           True(),
+					AcceptOnlyNeuteredMales: ACCEPT_ONLY_NEUTERED_MALES,
+					AcceptFemales:           True(),
+					DaysOfMonth:             fixtures.Preference.AllDaysOfMonth,
+					AcceptFemaleInHeat:      True(),
+					AcceptPuppies:           True(),
+					AcceptMales:             True(),
+					PetWeight:               fixtures.Preference.AllPetWeight,
+				})
+
+				newPet := pet_case.PatchValues{
+					Neutered: False(),
+					Gender:   pet.Male,
+				}
+				response, status := fixtures.Pet.Patch(t, scenario.PetID, newPet, scenario.TutorToken)
+				require.Equal(t, "OK", response)
+				require.Equal(t, http.StatusOK, status)
+
+				fixtures.Schedule.Create(
+					t,
+					schedule_case.CreateInput{
+						PetID:        scenario.PetID,
+						HostID:       scenario.HostID,
+						MonthYear:    time.Date(2023, 0, 1, 0, 0, 0, 0, time.UTC),
 						DaysOfMonth:  fixtures.Preference.AllDaysOfMonth,
 						FemaleInHeat: nil,
 					},
