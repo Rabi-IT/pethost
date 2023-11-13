@@ -9,11 +9,11 @@ import (
 type CreateInput struct {
 	Name      string `validate:"required"`
 	Breed     string
-	Size      string
 	Birthdate string
 	Gender    string
-	Weight    string
+	Weight    uint8
 	Species   string
+	Neutered  bool
 }
 
 func (c PetCase) Create(ctx *core_context.AppContext, input *CreateInput) (string, error) {
@@ -24,11 +24,11 @@ func (c PetCase) Create(ctx *core_context.AppContext, input *CreateInput) (strin
 	return c.gateway.Create(g.CreateInput{
 		Name:      input.Name,
 		Breed:     input.Breed,
-		Size:      input.Size,
 		Birthdate: input.Birthdate,
 		Gender:    input.Gender,
 		Weight:    input.Weight,
 		Species:   input.Species,
 		UserID:    ctx.Session.UserID,
+		Neutered:  input.Neutered,
 	})
 }

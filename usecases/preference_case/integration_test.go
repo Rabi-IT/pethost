@@ -18,11 +18,11 @@ func Test_Integration_Create__should_be_able_to_create(t *testing.T) {
 		"acceptElderly":           false,
 		"acceptOnlyNeuteredMales": false,
 		"acceptFemales":           false,
-		"daysOfMonth":             (1 << 32) - 1,
+		"daysOfMonth":             fixtures.Preference.AllDaysOfMonth,
 		"acceptFemaleInHeat":      false,
 		"acceptPuppies":           false,
 		"acceptMales":             false,
-		"petWeight":               1<<5 - 1,
+		"petWeight":               fixtures.Preference.AllPetWeight,
 	}
 
 	id := ""

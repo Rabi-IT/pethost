@@ -11,6 +11,7 @@ func (g *GormPreferenceGatewayAdapter) Create(input CreateInput) (string, error)
 
 	result := g.DB.Conn.Create(&models.Preference{
 		ID:                      id,
+		UserID:                  input.UserID,
 		PetWeight:               input.PetWeight,
 		AcceptFemaleInHeat:      input.AcceptFemaleInHeat,
 		AcceptPuppies:           input.AcceptPuppies,

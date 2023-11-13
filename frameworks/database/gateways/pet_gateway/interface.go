@@ -13,10 +13,10 @@ type CreateInput struct {
 	Species   string
 	Name      string
 	Breed     string
-	Size      string
 	Birthdate string
 	Gender    string
-	Weight    string
+	Weight    uint8
+	Neutered  bool
 }
 
 type PatchFilter struct {
@@ -24,20 +24,18 @@ type PatchFilter struct {
 	Species   *string
 	Name      *string
 	Breed     *string
-	Size      *string
 	Birthdate *string
 	Gender    *string
-	Weight    *string
+	Weight    *uint8
 }
 
 type PatchValues struct {
 	Species   string
 	Name      string
 	Breed     string
-	Size      string
 	Birthdate string
 	Gender    string
-	Weight    string
+	Weight    uint8
 }
 
 type ListInput struct {
@@ -47,19 +45,18 @@ type ListInput struct {
 type ListOutput struct {
 	Name      string
 	Breed     string
-	Size      string
 	Birthdate string
 	Gender    string
-	Weight    string
+	Weight    uint8
 	Species   string
 }
 
 type GetByIDOutput struct {
 	Name      string
 	Breed     string
-	Size      string
 	Birthdate string
 	Gender    string
-	Weight    string
+	Weight    uint8
 	Species   string
+	Neutered  bool
 }

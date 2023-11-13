@@ -11,6 +11,8 @@ var TestDatabase = gorm_adapter.New(config.TestDatabase)
 var tables = []string{
 	models.Pet{}.TableName(),
 	models.User{}.TableName(),
+	models.Preference{}.TableName(),
+	models.Schedule{}.TableName(),
 }
 
 func CleanDatabase() {

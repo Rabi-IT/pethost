@@ -1,6 +1,10 @@
 package schedule_gateway
 
-import "pethost/frameworks/database"
+import (
+	"pethost/frameworks/database"
+	"pethost/usecases/schedule_case/schedule_status"
+	"time"
+)
 
 type ScheduleGateway interface {
 	Create(input CreateInput) (string, error)
@@ -9,12 +13,13 @@ type ScheduleGateway interface {
 }
 
 type CreateInput struct {
-	PetID   string
-	Status  string
-	Notes   string
-	TutorID string
-	HostID  string
-	Date    string
+	PetID       string
+	TutorID     string
+	HostID      string
+	MonthYear   time.Time
+	DaysOfMonth uint32
+	Status      schedule_status.Status
+	Notes       string
 }
 
 type PatchFilter struct {
@@ -28,30 +33,21 @@ type PatchFilter struct {
 }
 
 type PatchValues struct {
-	Status  string
-	Notes   *string
-	TutorID string
-	HostID  string
-	Date    string
-	PetID   string
+	Status string
 }
 
 type PaginateFilter struct {
-	Notes   *string
-	TutorID *string
-	HostID  *string
-	Date    *string
-	PetID   *string
-	Status  *string
+	HostID string
+	Status schedule_status.Status
 }
 
 type PaginateData struct {
-	Notes   *string
-	TutorID string
-	HostID  string
-	Date    string
-	PetID   string
-	Status  string
+	PetID       string
+	TutorID     string
+	MonthYear   time.Time
+	DaysOfMonth uint32
+	Status      schedule_status.Status
+	Notes       string
 }
 
 type PaginateOutput struct {

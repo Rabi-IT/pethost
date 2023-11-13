@@ -35,11 +35,6 @@ func (c ScheduleCase) Patch(ctx context.Context, filter PatchFilter, values Patc
 			HostID:  filter.HostID,
 			Date:    filter.Date,
 		}, g.PatchValues{
-			PetID:   values.PetID,
-			Status:  values.Status,
-			Notes:   values.Notes,
-			TutorID: values.TutorID,
-			HostID:  values.HostID,
-			Date:    values.Date,
+			Status: values.Status,
 		})
 }

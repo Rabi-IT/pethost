@@ -22,10 +22,6 @@ func (g GormPetGatewayAdapter) Patch(filter PatchFilter, newValues PatchValues) 
 			query = query.Where("Breed = ?", filter.Breed)
 		}
 
-		if filter.Size != nil {
-			query = query.Where("Size = ?", filter.Size)
-		}
-
 		if filter.Birthdate != nil {
 			query = query.Where("Birthdate = ?", filter.Birthdate)
 		}

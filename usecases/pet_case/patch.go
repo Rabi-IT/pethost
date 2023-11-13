@@ -8,20 +8,18 @@ import (
 type PatchFilter struct {
 	ID        *string
 	Breed     *string
-	Size      *string
 	Birthdate *string
 	Gender    *string
-	Weight    *string
+	Weight    *uint8
 	Species   *string
 	Name      *string
 }
 
 type PatchValues struct {
 	Breed     string
-	Size      string
 	Birthdate string
 	Gender    string
-	Weight    string
+	Weight    uint8
 	Species   string
 	Name      string
 }
@@ -31,7 +29,6 @@ func (c PetCase) Patch(ctx context.Context, filter PatchFilter, values PatchValu
 		g.PatchFilter{
 			ID:        filter.ID,
 			Breed:     filter.Breed,
-			Size:      filter.Size,
 			Birthdate: filter.Birthdate,
 			Gender:    filter.Gender,
 			Weight:    filter.Weight,
@@ -39,7 +36,6 @@ func (c PetCase) Patch(ctx context.Context, filter PatchFilter, values PatchValu
 			Name:      filter.Name,
 		}, g.PatchValues{
 			Breed:     values.Breed,
-			Size:      values.Size,
 			Birthdate: values.Birthdate,
 			Gender:    values.Gender,
 			Weight:    values.Weight,

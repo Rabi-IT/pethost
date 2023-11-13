@@ -16,6 +16,11 @@ func NewSchedule(d database.Database) *c.ScheduleController {
 	}
 
 	gateway := &g.GormScheduleGatewayAdapter{DB: DB}
-	usecase := schedule_case.New(gateway)
+	usecase := schedule_case.New(
+		gateway,
+		newPreferenceCase(DB),
+		newPetCase(DB),
+	)
+
 	return c.New(usecase)
 }

@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"pethost/config"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -61,6 +62,7 @@ type GetInput struct {
 	URI      string
 	Response any
 	Token    string
+	Query    any
 }
 
 func Get(t *testing.T, input GetInput) (statusCode int) {
@@ -69,6 +71,18 @@ func Get(t *testing.T, input GetInput) (statusCode int) {
 
 	if input.Token != "" {
 		req.Header.Set("Authorization", "Bearer "+input.Token)
+	}
+
+	if input.Query != nil {
+		q := req.URL.Query()
+		v := reflect.ValueOf(input.Query)
+		typeOfS := v.Type()
+
+		for i := 0; i < v.NumField(); i++ {
+			q.Add(typeOfS.Field(i).Name, fmt.Sprintf("%v", v.Field(i).Interface()))
+		}
+
+		req.URL.RawQuery = q.Encode()
 	}
 
 	client := &http.Client{}
@@ -97,12 +111,14 @@ func Get(t *testing.T, input GetInput) (statusCode int) {
 }
 
 type PatchInput struct {
-	URI   string
-	Body  any
-	Token string
+	URI      string
+	Body     any
+	Response any
+	Token    string
+	Query    any
 }
 
-func Patch(t *testing.T, input PatchInput) string {
+func Patch(t *testing.T, input PatchInput) (statusCode int) {
 	b, err := json.Marshal(input.Body)
 	require.Nil(t, err)
 
@@ -114,15 +130,41 @@ func Patch(t *testing.T, input PatchInput) string {
 		req.Header.Set("Authorization", "Bearer "+input.Token)
 	}
 
+	if input.Query != nil {
+		q := req.URL.Query()
+		v := reflect.ValueOf(input.Query)
+		typeOfS := v.Type()
+
+		for i := 0; i < v.NumField(); i++ {
+			q.Add(typeOfS.Field(i).Name, fmt.Sprintf("%v", v.Field(i).Interface()))
+		}
+
+		req.URL.RawQuery = q.Encode()
+	}
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	require.Nil(t, err)
+
+	statusCode = resp.StatusCode
 
 	defer resp.Body.Close()
 	responseBody, err := io.ReadAll(resp.Body)
 	require.Nil(t, err)
 
-	return string(responseBody)
+	if v, ok := input.Response.(*string); ok {
+		*v = string(responseBody)
+		return
+	}
+
+	if resp.Header.Get("Content-Type") != "application/json" {
+		return
+	}
+
+	err = json.Unmarshal(responseBody, input.Response)
+	require.Nil(t, err)
+
+	return
 }
 
 type DeleteInput struct {

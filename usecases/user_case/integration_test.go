@@ -152,13 +152,13 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 	}
 
 	token := fixtures.User.Login(t, &id)
-	ok := fixtures.Patch(t, fixtures.PatchInput{
+	statusCode := fixtures.Patch(t, fixtures.PatchInput{
 		Body:  Body,
 		URI:   fixtures.User.URI + id,
 		Token: token,
 	})
 
-	require.True(t, ok == "OK")
+	require.Equal(t, http.StatusOK, statusCode)
 
 	found, statusCode := fixtures.User.GetByID(t, id, token)
 	require.Equal(t, http.StatusOK, statusCode)

@@ -25,6 +25,7 @@ func (d *GormAdapter) Migrate() error {
 		&models.Pet{},
 		&models.User{},
 		&models.Preference{},
+		&models.Schedule{},
 	)
 }
 
