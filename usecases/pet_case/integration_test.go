@@ -5,6 +5,7 @@ import (
 	"pethost/fixtures"
 	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/usecases/pet_case"
+	"pethost/usecases/pet_case/pet"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -84,7 +85,7 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 		Name:      "Name",
 		Breed:     "Breed",
 		Birthdate: "Birthdate",
-		Gender:    "Gender",
+		Gender:    pet.Male,
 		Weight:    fixtures.Pet.MediumPet,
 		Species:   "Species",
 		Neutered:  true,
@@ -112,7 +113,7 @@ func Test_Integration_should_be_able_to_list(t *testing.T) {
 			Name:      "Name",
 			Breed:     "Breed",
 			Birthdate: "Birthdate",
-			Gender:    "Gender",
+			Gender:    pet.Male,
 			Weight:    fixtures.Pet.MediumPet,
 			Species:   "Species",
 		},
@@ -145,7 +146,7 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 		Name:      "NewName",
 		Breed:     "Breed",
 		Birthdate: "Birthdate",
-		Gender:    "Gender",
+		Gender:    pet.Male,
 		Weight:    fixtures.Pet.MediumPet,
 		Species:   "Species",
 		Neutered:  true,

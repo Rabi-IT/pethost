@@ -277,7 +277,6 @@ func Test_Integration_Create(t *testing.T) {
 			fixtures.CleanDatabase()
 			scenario := test.seed()
 
-			expected := test.expected(scenario)
 			response := schedule_gateway.PaginateOutput{
 				Data: []schedule_gateway.PaginateData{},
 			}
@@ -291,6 +290,7 @@ func Test_Integration_Create(t *testing.T) {
 				Token:    scenario.HostToken,
 			})
 
+			expected := test.expected(scenario)
 			if len(response.Data) == 0 {
 				require.Equal(t, expected, schedule_gateway.PaginateData{})
 			} else {
