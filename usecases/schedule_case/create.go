@@ -4,6 +4,7 @@ import (
 	"pethost/app_context"
 	"pethost/frameworks/database/gateways/preference_gateway"
 	g "pethost/frameworks/database/gateways/schedule_gateway"
+	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/schedule_case/schedule_status"
 	"pethost/utils"
 	"time"
@@ -23,32 +24,35 @@ func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (
 		return "", err
 	}
 
-	// verificar UserID na hora de buscar o pet
-	pet, err := c.pet.GetByID(ctx, input.PetID)
+	// verificar UserID na hora de buscar o petFound
+	petFound, err := c.pet.GetByID(ctx, input.PetID)
 	if err != nil {
 		return
 	}
 
 	filter := &preference_gateway.GetByFilterInput{
 		UserID:         input.HostID,
-		AcceptPuppies:  nil,
-		PetWeight:      pet.Weight,
-		AcceptElderly:  nil,
 		DaysOfMonth:    input.DaysOfMonth,
+		PetWeight:      petFound.Weight,
 		OnlyVaccinated: nil,
+		AcceptPuppies:  nil,
+		AcceptElderly:  nil,
 	}
 
-	isFemale := pet.Gender == "female"
 	True := true
 	False := false
-	if isFemale {
+	if pet.Female == petFound.Gender {
 		filter.AcceptFemales = &True
 		filter.AcceptFemaleInHeat = input.FemaleInHeat
 	} else {
 		filter.AcceptMales = &True
-		if !pet.Neutered {
+		if !petFound.Neutered {
 			filter.AcceptOnlyNeuteredMales = &False
 		}
+	}
+
+	if !petFound.Vaccinated {
+		filter.OnlyVaccinated = &False
 	}
 
 	host, err := c.preference.GetByFilter(ctx, filter)

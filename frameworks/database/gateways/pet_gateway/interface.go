@@ -32,13 +32,14 @@ type PatchFilter struct {
 }
 
 type PatchValues struct {
-	Species   string
-	Name      string
-	Breed     string
-	Birthdate string
-	Gender    pet.Gender
-	Weight    uint8
-	Neutered  *bool
+	Species    string
+	Name       string
+	Breed      string
+	Birthdate  string
+	Gender     pet.Gender
+	Weight     uint8
+	Neutered   *bool
+	Vaccinated *bool
 }
 
 type ListInput struct {
@@ -55,11 +56,12 @@ type ListOutput struct {
 }
 
 type GetByIDOutput struct {
-	Name      string
-	Breed     string
-	Birthdate string
-	Gender    pet.Gender
-	Weight    uint8
-	Species   string
-	Neutered  bool
+	Name       string
+	Breed      string
+	Birthdate  string
+	Gender     pet.Gender
+	Weight     uint8
+	Species    string
+	Neutered   bool
+	Vaccinated bool
 }

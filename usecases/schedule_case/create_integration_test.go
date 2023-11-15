@@ -358,6 +358,50 @@ func Test_Integration_Create(t *testing.T) {
 				return schedule_gateway.PaginateData{}
 			},
 		},
+
+		{
+			title: "should not schedule if pet is not vaccinated and host only accepts vaccinated pets",
+			seed: func() fixtures.CreateDefaultOutput {
+				ONLY_VACCINATED := True()
+				VACCINATED := False()
+				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
+					OnlyVaccinated:          ONLY_VACCINATED,
+					AcceptElderly:           True(),
+					AcceptOnlyNeuteredMales: True(),
+					AcceptFemales:           True(),
+					DaysOfMonth:             fixtures.Preference.AllDaysOfMonth,
+					AcceptFemaleInHeat:      True(),
+					AcceptPuppies:           True(),
+					AcceptMales:             True(),
+					PetWeight:               fixtures.Preference.AllPetWeight,
+				})
+
+				newPet := pet_case.PatchValues{
+					Vaccinated: VACCINATED,
+				}
+
+				response, status := fixtures.Pet.Patch(t, scenario.PetID, newPet, scenario.TutorToken)
+				require.Equal(t, "OK", response)
+				require.Equal(t, http.StatusOK, status)
+
+				fixtures.Schedule.Create(
+					t,
+					schedule_case.CreateInput{
+						PetID:        scenario.PetID,
+						HostID:       scenario.HostID,
+						MonthYear:    time.Date(2023, 0, 1, 0, 0, 0, 0, time.UTC),
+						DaysOfMonth:  fixtures.Preference.AllDaysOfMonth,
+						FemaleInHeat: nil,
+					},
+					scenario.TutorToken,
+				)
+
+				return scenario
+			},
+			expected: func(scenario fixtures.CreateDefaultOutput) schedule_gateway.PaginateData {
+				return schedule_gateway.PaginateData{}
+			},
+		},
 	}
 
 	for _, test := range tests {

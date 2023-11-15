@@ -17,13 +17,14 @@ type PatchFilter struct {
 }
 
 type PatchValues struct {
-	Breed     string
-	Birthdate string
-	Gender    pet.Gender
-	Weight    uint8
-	Species   string
-	Name      string
-	Neutered  *bool
+	Breed      string
+	Birthdate  string
+	Gender     pet.Gender
+	Weight     uint8
+	Species    string
+	Name       string
+	Neutered   *bool
+	Vaccinated *bool
 }
 
 func (c PetCase) Patch(ctx context.Context, filter PatchFilter, values PatchValues) (bool, error) {
@@ -37,12 +38,13 @@ func (c PetCase) Patch(ctx context.Context, filter PatchFilter, values PatchValu
 			Species:   filter.Species,
 			Name:      filter.Name,
 		}, g.PatchValues{
-			Breed:     values.Breed,
-			Birthdate: values.Birthdate,
-			Gender:    values.Gender,
-			Weight:    values.Weight,
-			Species:   values.Species,
-			Name:      values.Name,
-			Neutered:  values.Neutered,
+			Breed:      values.Breed,
+			Birthdate:  values.Birthdate,
+			Gender:     values.Gender,
+			Weight:     values.Weight,
+			Species:    values.Species,
+			Name:       values.Name,
+			Neutered:   values.Neutered,
+			Vaccinated: values.Vaccinated,
 		})
 }
