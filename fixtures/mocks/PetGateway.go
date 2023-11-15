@@ -61,25 +61,25 @@ func (_m *PetGateway) Delete(id string) (bool, error) {
 	return r0, r1
 }
 
-// GetByID provides a mock function with given fields: id
-func (_m *PetGateway) GetByID(id string) (*pet_gateway.GetByIDOutput, error) {
-	ret := _m.Called(id)
+// GetByFilter provides a mock function with given fields: filter
+func (_m *PetGateway) GetByFilter(filter pet_gateway.GetByFilterInput) (*pet_gateway.GetByFilterOutput, error) {
+	ret := _m.Called(filter)
 
-	var r0 *pet_gateway.GetByIDOutput
+	var r0 *pet_gateway.GetByFilterOutput
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (*pet_gateway.GetByIDOutput, error)); ok {
-		return rf(id)
+	if rf, ok := ret.Get(0).(func(pet_gateway.GetByFilterInput) (*pet_gateway.GetByFilterOutput, error)); ok {
+		return rf(filter)
 	}
-	if rf, ok := ret.Get(0).(func(string) *pet_gateway.GetByIDOutput); ok {
-		r0 = rf(id)
+	if rf, ok := ret.Get(0).(func(pet_gateway.GetByFilterInput) *pet_gateway.GetByFilterOutput); ok {
+		r0 = rf(filter)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*pet_gateway.GetByIDOutput)
+			r0 = ret.Get(0).(*pet_gateway.GetByFilterOutput)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(id)
+	if rf, ok := ret.Get(1).(func(pet_gateway.GetByFilterInput) error); ok {
+		r1 = rf(filter)
 	} else {
 		r1 = ret.Error(1)
 	}

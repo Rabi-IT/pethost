@@ -71,7 +71,7 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	token := fixtures.User.Login(t, nil)
 	id := fixtures.Pet.Create(t, nil, token)
 
-	responseBody := pet_gateway.GetByIDOutput{}
+	responseBody := pet_gateway.GetByFilterOutput{}
 
 	statusCode := fixtures.Get(t, fixtures.GetInput{
 		URI:      "/pet/" + id,
@@ -81,7 +81,7 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, statusCode)
 
-	EXPECTED := pet_gateway.GetByIDOutput{
+	EXPECTED := pet_gateway.GetByFilterOutput{
 		Name:      "Name",
 		Breed:     "Breed",
 		Birthdate: "Birthdate",
@@ -142,7 +142,7 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 	found, statusCode := fixtures.Pet.GetByID(t, id, token)
 	require.Equal(t, http.StatusOK, statusCode)
 
-	EXPECTED := pet_gateway.GetByIDOutput{
+	EXPECTED := pet_gateway.GetByFilterOutput{
 		Name:      "NewName",
 		Breed:     "Breed",
 		Birthdate: "Birthdate",
@@ -177,7 +177,7 @@ func Test_Integration_should_be_able_to_delete(t *testing.T) {
 	found, statusCode := fixtures.Pet.GetByID(t, id, token)
 	require.Equal(t, statusCode, http.StatusNotFound)
 
-	EXPECTED := pet_gateway.GetByIDOutput{}
+	EXPECTED := pet_gateway.GetByFilterOutput{}
 
 	require.Equal(t, EXPECTED, found)
 }
