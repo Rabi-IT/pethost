@@ -6,6 +6,7 @@ import (
 	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/usecases/pet_case"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -21,7 +22,7 @@ func Test_Unit_Create__should_fail_if_name_is_empty(t *testing.T) {
 	_, err := sut.Create(fixtures.DUMMY_CONTEXT, &pet_case.CreateInput{
 		Name:      "",
 		Breed:     "Breed",
-		Birthdate: "Birthdate",
+		Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 		Gender:    "Gender",
 		Weight:    fixtures.Preference.AllPetWeight,
 		Species:   "Species",
@@ -41,7 +42,7 @@ func Test_Unit_Create__should_not_fail_if_all_optional_fields_are_not_filled_in(
 	id, err := sut.Create(fixtures.DUMMY_CONTEXT, &pet_case.CreateInput{
 		Name:      "Name",
 		Breed:     "",
-		Birthdate: "",
+		Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 		Gender:    "",
 		Weight:    fixtures.Preference.AllPetWeight,
 		Species:   "",

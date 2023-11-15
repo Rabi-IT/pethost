@@ -6,6 +6,7 @@ import (
 	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -34,7 +35,7 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string
 		Body = &pet_case.CreateInput{
 			Name:       "Name",
 			Breed:      "Breed",
-			Birthdate:  "Birthdate",
+			Birthdate:  time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 			Gender:     pet.Male,
 			Weight:     Pet.MediumPet,
 			Species:    "Species",

@@ -68,6 +68,14 @@ func (*ScheduleCase) createFilter(input *CreateInput, petFound *pet_gateway.GetB
 		}
 	}
 
+	petYears := pet.CalculateAge(petFound.Birthdate, time.Now())
+
+	if petYears < pet.PuppieAge {
+		filter.AcceptPuppies = &True
+	} else if petYears >= pet.ElderlyAge {
+		filter.AcceptElderly = &True
+	}
+
 	if !petFound.Vaccinated {
 		filter.OnlyVaccinated = &False
 	}

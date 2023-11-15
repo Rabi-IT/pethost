@@ -1,6 +1,9 @@
 package models
 
-import "pethost/usecases/pet_case/pet"
+import (
+	"pethost/usecases/pet_case/pet"
+	"time"
+)
 
 type Pet struct {
 	ID         string     `gorm:"type:uuid"`
@@ -8,7 +11,7 @@ type Pet struct {
 	Species    string     `gorm:"not null"`
 	Name       string     `gorm:"not null"`
 	Breed      string     `gorm:"not null"`
-	Birthdate  string     `gorm:"not null"`
+	Birthdate  time.Time  `gorm:"not null"`
 	Gender     pet.Gender `gorm:"not null"`
 	Neutered   bool       `gorm:"not null"`
 	Vaccinated bool       `gorm:"not null"`

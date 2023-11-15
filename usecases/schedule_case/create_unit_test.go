@@ -47,7 +47,7 @@ func Test_Unit(t *testing.T) {
 	test.petGateway.On("GetByID", mock.Anything, &pet_gateway.GetByFilterOutput{
 		Name:      "A beautyful name",
 		Breed:     "A great breed",
-		Birthdate: "Today",
+		Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 		Gender:    pet.Male,
 		Weight:    fixtures.Preference.AllPetWeight,
 		Species:   string(pet.Dog),
