@@ -17,13 +17,14 @@ func (g GormPetGatewayAdapter) GetByID(id string) (*GetByIDOutput, error) {
 	}
 
 	adapted := GetByIDOutput{
-		Birthdate: output.Birthdate,
-		Gender:    output.Gender,
-		Weight:    output.Weight,
-		Species:   output.Species,
-		Name:      output.Name,
-		Breed:     output.Breed,
-		Neutered:  output.Neutered,
+		Birthdate:  output.Birthdate,
+		Gender:     output.Gender,
+		Weight:     output.Weight,
+		Species:    output.Species,
+		Name:       output.Name,
+		Breed:      output.Breed,
+		Neutered:   output.Neutered,
+		Vaccinated: output.Vaccinated,
 	}
 
 	return &adapted, nil
