@@ -44,7 +44,7 @@ func makeSut(t *testing.T) *makeSutOutput {
 func Test_Unit(t *testing.T) {
 	t.Skip()
 	test := makeSut(t)
-	test.petGateway.On("GetByID", mock.Anything, &pet_gateway.GetByIDOutput{
+	test.petGateway.On("GetByID", mock.Anything, &pet_gateway.GetByFilterOutput{
 		Name:      "A beautyful name",
 		Breed:     "A great breed",
 		Birthdate: "Today",

@@ -8,7 +8,7 @@ func (g GormPetGatewayAdapter) List(filter ListInput) ([]ListOutput, error) {
 	query := g.DB.Conn.Model(&models.Pet{})
 
 	if filter.TutorID != nil {
-		query = query.Where("user_id = ?", filter.TutorID)
+		query = query.Where("tutor_id = ?", filter.TutorID)
 	}
 
 	output := []ListOutput{}

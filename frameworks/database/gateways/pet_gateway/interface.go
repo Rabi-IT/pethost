@@ -7,18 +7,19 @@ type PetGateway interface {
 	Patch(filter PatchFilter, values PatchValues) (bool, error)
 	List(input ListInput) ([]ListOutput, error)
 	Delete(id string) (bool, error)
-	GetByID(id string) (*GetByIDOutput, error)
+	GetByFilter(filter GetByFilterInput) (*GetByFilterOutput, error)
 }
 
 type CreateInput struct {
-	UserID    string
-	Species   string
-	Name      string
-	Breed     string
-	Birthdate string
-	Gender    pet.Gender
-	Weight    uint8
-	Neutered  bool
+	UserID     string
+	Species    string
+	Name       string
+	Breed      string
+	Birthdate  string
+	Gender     pet.Gender
+	Weight     uint8
+	Neutered   bool
+	Vaccinated bool
 }
 
 type PatchFilter struct {
@@ -55,7 +56,12 @@ type ListOutput struct {
 	Species   string
 }
 
-type GetByIDOutput struct {
+type GetByFilterInput struct {
+	ID      string
+	TutorID *string
+}
+
+type GetByFilterOutput struct {
 	Name       string
 	Breed      string
 	Birthdate  string

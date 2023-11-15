@@ -65,6 +65,31 @@ func Test_Integration_Create(t *testing.T) {
 		},
 
 		{
+			title: "should not schedule if tutor is not the owner of the pet",
+			seed: func() fixtures.CreateDefaultOutput {
+				scenario := fixtures.Preference.CreateDefault(t, nil)
+				NOT_TUTOR_PET := fixtures.Pet.Create(t, nil, scenario.HostToken)
+				fixtures.Schedule.Create(
+					t,
+					schedule_case.CreateInput{
+						PetID:        NOT_TUTOR_PET,
+						HostID:       scenario.HostID,
+						MonthYear:    time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
+						DaysOfMonth:  fixtures.Preference.AllDaysOfMonth,
+						Notes:        "Notes",
+						FemaleInHeat: nil,
+					},
+					scenario.TutorToken,
+				)
+
+				return scenario
+			},
+			expected: func(scenario fixtures.CreateDefaultOutput) schedule_gateway.PaginateData {
+				return schedule_gateway.PaginateData{}
+			},
+		},
+
+		{
 			title: "should not schedule if availability not meet tutor needs",
 			seed: func() fixtures.CreateDefaultOutput {
 				var from1To5 uint32 = 0b11111

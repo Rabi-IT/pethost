@@ -32,13 +32,14 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string
 	Body := input
 	if Body == nil {
 		Body = &pet_case.CreateInput{
-			Name:      "Name",
-			Breed:     "Breed",
-			Birthdate: "Birthdate",
-			Gender:    pet.Male,
-			Weight:    Pet.MediumPet,
-			Species:   "Species",
-			Neutered:  true,
+			Name:       "Name",
+			Breed:      "Breed",
+			Birthdate:  "Birthdate",
+			Gender:     pet.Male,
+			Weight:     Pet.MediumPet,
+			Species:    "Species",
+			Neutered:   true,
+			Vaccinated: true,
 		}
 	}
 
@@ -56,8 +57,8 @@ func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string
 	return id
 }
 
-func (petFixture) GetByID(t *testing.T, id string, token string) (pet_gateway.GetByIDOutput, int) {
-	found := pet_gateway.GetByIDOutput{}
+func (petFixture) GetByID(t *testing.T, id string, token string) (pet_gateway.GetByFilterOutput, int) {
+	found := pet_gateway.GetByFilterOutput{}
 
 	input := GetInput{
 		URI:      Pet.URI + id,

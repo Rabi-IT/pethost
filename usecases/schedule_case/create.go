@@ -2,6 +2,7 @@ package schedule_case
 
 import (
 	"pethost/app_context"
+	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/frameworks/database/gateways/preference_gateway"
 	g "pethost/frameworks/database/gateways/schedule_gateway"
 	"pethost/usecases/pet_case/pet"
@@ -24,19 +25,35 @@ func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (
 		return "", err
 	}
 
-	// verificar UserID na hora de buscar o petFound
 	petFound, err := c.pet.GetByID(ctx, input.PetID)
-	if err != nil {
+	if err != nil || petFound == nil {
 		return
 	}
 
+	filter := c.createFilter(input, petFound)
+
+	host, err := c.preference.GetByFilter(ctx, filter)
+
+	if err != nil || host == nil {
+		return
+	}
+
+	return c.gateway.Create(g.CreateInput{
+		PetID:       input.PetID,
+		TutorID:     ctx.Session.UserID,
+		HostID:      input.HostID,
+		MonthYear:   input.MonthYear,
+		DaysOfMonth: input.DaysOfMonth,
+		Status:      schedule_status.Open,
+		Notes:       input.Notes,
+	})
+}
+
+func (*ScheduleCase) createFilter(input *CreateInput, petFound *pet_gateway.GetByFilterOutput) *preference_gateway.GetByFilterInput {
 	filter := &preference_gateway.GetByFilterInput{
-		UserID:         input.HostID,
-		DaysOfMonth:    input.DaysOfMonth,
-		PetWeight:      petFound.Weight,
-		OnlyVaccinated: nil,
-		AcceptPuppies:  nil,
-		AcceptElderly:  nil,
+		UserID:      input.HostID,
+		DaysOfMonth: input.DaysOfMonth,
+		PetWeight:   petFound.Weight,
 	}
 
 	True := true
@@ -55,19 +72,5 @@ func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (
 		filter.OnlyVaccinated = &False
 	}
 
-	host, err := c.preference.GetByFilter(ctx, filter)
-
-	if err != nil || host == nil {
-		return
-	}
-
-	return c.gateway.Create(g.CreateInput{
-		PetID:       input.PetID,
-		TutorID:     ctx.Session.UserID,
-		HostID:      input.HostID,
-		MonthYear:   input.MonthYear,
-		DaysOfMonth: input.DaysOfMonth,
-		Status:      schedule_status.Open,
-		Notes:       input.Notes,
-	})
+	return filter
 }

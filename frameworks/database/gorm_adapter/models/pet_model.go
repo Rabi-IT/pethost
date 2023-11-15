@@ -12,8 +12,8 @@ type Pet struct {
 	Gender     pet.Gender `gorm:"not null"`
 	Neutered   bool       `gorm:"not null"`
 	Vaccinated bool       `gorm:"not null"`
-	User       User
-	UserID     string `gorm:"not null"`
+	Tutor      User
+	TutorID    string `gorm:"not null"`
 }
 
 func (m Pet) TableName() string {
