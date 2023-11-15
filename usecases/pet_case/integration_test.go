@@ -7,6 +7,7 @@ import (
 	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -84,7 +85,7 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	EXPECTED := pet_gateway.GetByFilterOutput{
 		Name:      "Name",
 		Breed:     "Breed",
-		Birthdate: "Birthdate",
+		Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 		Gender:    pet.Male,
 		Weight:    fixtures.Pet.MediumPet,
 		Species:   "Species",
@@ -112,7 +113,7 @@ func Test_Integration_should_be_able_to_list(t *testing.T) {
 		{
 			Name:      "Name",
 			Breed:     "Breed",
-			Birthdate: "Birthdate",
+			Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 			Gender:    pet.Male,
 			Weight:    fixtures.Pet.MediumPet,
 			Species:   "Species",
@@ -145,7 +146,7 @@ func Test_Integration_should_be_able_to_update(t *testing.T) {
 	EXPECTED := pet_gateway.GetByFilterOutput{
 		Name:      "NewName",
 		Breed:     "Breed",
-		Birthdate: "Birthdate",
+		Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 		Gender:    pet.Male,
 		Weight:    fixtures.Pet.MediumPet,
 		Species:   "Species",

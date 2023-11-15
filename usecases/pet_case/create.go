@@ -7,17 +7,18 @@ import (
 	g "pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/usecases/pet_case/pet"
 	"pethost/utils"
+	"time"
 )
 
 type CreateInput struct {
 	Name       string `validate:"required"`
 	Breed      string
-	Birthdate  string
-	Gender     pet.Gender
-	Weight     uint8
-	Species    string
-	Neutered   bool
-	Vaccinated bool
+	Birthdate  time.Time  `validate:"required"`
+	Gender     pet.Gender `validate:"required"`
+	Weight     uint8      `validate:"required"`
+	Species    string     `validate:"required"`
+	Neutered   bool       `validate:"required"`
+	Vaccinated bool       `validate:"required"`
 }
 
 var ErrInvalidWeight = errors.New("invalid weight")

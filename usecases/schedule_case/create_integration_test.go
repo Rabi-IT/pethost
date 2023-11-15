@@ -427,6 +427,94 @@ func Test_Integration_Create(t *testing.T) {
 				return schedule_gateway.PaginateData{}
 			},
 		},
+
+		{
+			title: "should not schedule if pet is elderly and host does not accept elderly pets",
+			seed: func() fixtures.CreateDefaultOutput {
+				ACCEPT_ELDERLY := False()
+				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
+					OnlyVaccinated:          True(),
+					AcceptElderly:           ACCEPT_ELDERLY,
+					AcceptOnlyNeuteredMales: True(),
+					AcceptFemales:           True(),
+					DaysOfMonth:             fixtures.Preference.AllDaysOfMonth,
+					AcceptFemaleInHeat:      True(),
+					AcceptPuppies:           True(),
+					AcceptMales:             True(),
+					PetWeight:               fixtures.Preference.AllPetWeight,
+				})
+
+				PET_BIRTHDATE := time.Now().AddDate(-pet.ElderlyAge, 0, 0)
+				newPet := pet_case.PatchValues{
+					Birthdate: PET_BIRTHDATE,
+				}
+
+				response, status := fixtures.Pet.Patch(t, scenario.PetID, newPet, scenario.TutorToken)
+				require.Equal(t, "OK", response)
+				require.Equal(t, http.StatusOK, status)
+
+				fixtures.Schedule.Create(
+					t,
+					schedule_case.CreateInput{
+						PetID:        scenario.PetID,
+						HostID:       scenario.HostID,
+						MonthYear:    time.Date(2023, 0, 1, 0, 0, 0, 0, time.UTC),
+						DaysOfMonth:  fixtures.Preference.AllDaysOfMonth,
+						FemaleInHeat: nil,
+					},
+					scenario.TutorToken,
+				)
+
+				return scenario
+			},
+			expected: func(scenario fixtures.CreateDefaultOutput) schedule_gateway.PaginateData {
+				return schedule_gateway.PaginateData{}
+			},
+		},
+
+		{
+			title: "should not schedule if pet is a puppy and host does not accept puppies",
+			seed: func() fixtures.CreateDefaultOutput {
+				ACCEPT_PUPPY := False()
+				scenario := fixtures.Preference.CreateDefault(t, &preference_case.CreateInput{
+					OnlyVaccinated:          True(),
+					AcceptElderly:           True(),
+					AcceptOnlyNeuteredMales: True(),
+					AcceptFemales:           True(),
+					DaysOfMonth:             fixtures.Preference.AllDaysOfMonth,
+					AcceptFemaleInHeat:      True(),
+					AcceptPuppies:           ACCEPT_PUPPY,
+					AcceptMales:             True(),
+					PetWeight:               fixtures.Preference.AllPetWeight,
+				})
+
+				PET_BIRTHDATE := time.Now().AddDate(-pet.PuppieAge, 0, 1)
+				newPet := pet_case.PatchValues{
+					Birthdate: PET_BIRTHDATE,
+				}
+
+				response, status := fixtures.Pet.Patch(t, scenario.PetID, newPet, scenario.TutorToken)
+				require.Equal(t, "OK", response)
+				require.Equal(t, http.StatusOK, status)
+
+				fixtures.Schedule.Create(
+					t,
+					schedule_case.CreateInput{
+						PetID:        scenario.PetID,
+						HostID:       scenario.HostID,
+						MonthYear:    time.Date(2023, 0, 1, 0, 0, 0, 0, time.UTC),
+						DaysOfMonth:  fixtures.Preference.AllDaysOfMonth,
+						FemaleInHeat: nil,
+					},
+					scenario.TutorToken,
+				)
+
+				return scenario
+			},
+			expected: func(scenario fixtures.CreateDefaultOutput) schedule_gateway.PaginateData {
+				return schedule_gateway.PaginateData{}
+			},
+		},
 	}
 
 	for _, test := range tests {
