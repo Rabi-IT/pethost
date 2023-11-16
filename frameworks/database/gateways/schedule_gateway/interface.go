@@ -12,14 +12,18 @@ type ScheduleGateway interface {
 	Paginate(filter PaginateFilter, paginate database.PaginateInput) (*PaginateOutput, error)
 }
 
+type CreateDate struct {
+	MonthYear   time.Time `validate:"required"`
+	DaysOfMonth uint32    `validate:"required"`
+}
+
 type CreateInput struct {
-	PetID       string
-	TutorID     string
-	HostID      string
-	MonthYear   time.Time
-	DaysOfMonth uint32
-	Status      schedule_status.Status
-	Notes       string
+	TutorID string
+	HostID  string
+	Status  schedule_status.Status
+	Notes   string
+	PetIDs  []string
+	Date    []CreateDate
 }
 
 type PatchFilter struct {

@@ -5,8 +5,14 @@ import (
 	g "pethost/frameworks/database/gateways/pet_gateway"
 )
 
-func (c PetCase) List(ctx *app_context.AppContext) ([]g.ListOutput, error) {
-	filter := g.ListInput{}
+type ListInput struct {
+	PetIDs []string
+}
+
+func (c PetCase) List(ctx *app_context.AppContext, input *ListInput) ([]g.ListOutput, error) {
+	filter := g.ListInput{
+		PetIDs: input.PetIDs,
+	}
 
 	if ctx.Session.Role.IsUser() {
 		filter.TutorID = &ctx.Session.UserID

@@ -8,7 +8,11 @@ const (
 )
 
 func CalculateAge(birthdate, today time.Time) int {
-	today = today.In(birthdate.Location())
+	location := birthdate.Location()
+	if location == nil {
+		location = time.UTC
+	}
+	today = today.In(location)
 	ty, tm, td := today.Date()
 	today = time.Date(ty, tm, td, 0, 0, 0, 0, time.UTC)
 	by, bm, bd := birthdate.Date()

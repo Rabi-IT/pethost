@@ -5,56 +5,8 @@ import (
 )
 
 func (g *GormPreferenceGatewayAdapter) GetByFilter(filter *GetByFilterInput) (*GetByFilterOutput, error) {
-	output := &GetByFilterOutput{}
-	query := g.DB.Conn.Model(
-		&models.Preference{},
-	).Where(
-		"user_id = ?", filter.UserID,
-	).Where(
-		"pet_weight & ? > 0", filter.PetWeight,
-	).Where(
-		"days_of_month & ? > 0", filter.DaysOfMonth,
-	)
-
-	if filter.AcceptPuppies != nil {
-		query = query.Where("accept_puppies = ?", filter.AcceptPuppies)
-	}
-
-	if filter.AcceptMales != nil {
-		query = query.Where(
-			"accept_males = ?", filter.AcceptMales,
-		)
-	}
-
-	if filter.AcceptFemaleInHeat != nil {
-		query = query.Where(
-			"accept_female_in_heat = ?", filter.AcceptFemaleInHeat,
-		)
-	}
-
-	if filter.AcceptElderly != nil {
-		query = query.Where(
-			"accept_elderly = ?", filter.AcceptElderly,
-		)
-	}
-
-	if filter.AcceptOnlyNeuteredMales != nil {
-		query = query.Where(
-			"accept_only_neutered_males = ?", filter.AcceptOnlyNeuteredMales,
-		)
-	}
-
-	if filter.AcceptFemales != nil {
-		query = query.Where(
-			"accept_females = ?", filter.AcceptFemales,
-		)
-	}
-
-	if filter.OnlyVaccinated != nil {
-		query = query.Where(
-			"only_vaccinated = ?", filter.OnlyVaccinated,
-		)
-	}
+	output := &models.Preference{}
+	query := g.DB.Conn.Find(output, "user_id = ?", filter.UserID).Limit(1)
 
 	result := query.Scan(&output)
 
@@ -67,7 +19,15 @@ func (g *GormPreferenceGatewayAdapter) GetByFilter(filter *GetByFilterInput) (*G
 	}
 
 	adapted := GetByFilterOutput{
-		UserID: output.UserID,
+		DaysOfMonth:             output.DaysOfMonth,
+		OnlyVaccinated:          output.OnlyVaccinated,
+		AcceptElderly:           output.AcceptElderly,
+		AcceptOnlyNeuteredMales: output.AcceptOnlyNeuteredMales,
+		AcceptFemales:           output.AcceptFemales,
+		PetWeight:               output.PetWeight,
+		AcceptFemaleInHeat:      output.AcceptFemaleInHeat,
+		AcceptPuppies:           output.AcceptPuppies,
+		AcceptMales:             output.AcceptMales,
 	}
 
 	return &adapted, nil

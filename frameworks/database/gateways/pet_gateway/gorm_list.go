@@ -11,6 +11,10 @@ func (g GormPetGatewayAdapter) List(filter ListInput) ([]ListOutput, error) {
 		query = query.Where("tutor_id = ?", filter.TutorID)
 	}
 
+	if filter.PetIDs != nil {
+		query = query.Where("id IN ?", filter.PetIDs)
+	}
+
 	output := []ListOutput{}
 	result := query.Scan(&output)
 

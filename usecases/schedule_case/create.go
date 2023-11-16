@@ -5,6 +5,7 @@ import (
 	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/frameworks/database/gateways/preference_gateway"
 	g "pethost/frameworks/database/gateways/schedule_gateway"
+	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/schedule_case/schedule_status"
 	"pethost/utils"
@@ -12,12 +13,11 @@ import (
 )
 
 type CreateInput struct {
-	PetID        string    `validate:"required"`
-	HostID       string    `validate:"required"`
-	MonthYear    time.Time `validate:"required"`
-	DaysOfMonth  uint32    `validate:"required"`
-	Notes        string
-	FemaleInHeat *bool
+	HostID        string         `validate:"required"`
+	PetIDs        []string       `validate:"required"`
+	Dates         []g.CreateDate `validate:"required"`
+	FemalesInHeat map[string]bool
+	Notes         string
 }
 
 func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (id string, err error) {
@@ -25,60 +25,100 @@ func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (
 		return "", err
 	}
 
-	petFound, err := c.pet.GetByID(ctx, input.PetID)
-	if err != nil || petFound == nil {
+	petsFound, err := c.pet.List(ctx, &pet_case.ListInput{
+		PetIDs: input.PetIDs,
+	})
+
+	if err != nil || len(petsFound) == 0 {
 		return
 	}
 
-	filter := c.createFilter(input, petFound)
+	preference, err := c.preference.GetByFilter(ctx, &preference_gateway.GetByFilterInput{
+		UserID: input.HostID,
+	})
 
-	host, err := c.preference.GetByFilter(ctx, filter)
+	if err != nil || preference == nil {
+		return
+	}
 
-	if err != nil || host == nil {
+	if valid := c.validateSchedule(preference, input.Dates, petsFound, input.FemalesInHeat); !valid {
 		return
 	}
 
 	return c.gateway.Create(g.CreateInput{
-		PetID:       input.PetID,
-		TutorID:     ctx.Session.UserID,
-		HostID:      input.HostID,
-		MonthYear:   input.MonthYear,
-		DaysOfMonth: input.DaysOfMonth,
-		Status:      schedule_status.Open,
-		Notes:       input.Notes,
+		PetIDs:  input.PetIDs,
+		TutorID: ctx.Session.UserID,
+		HostID:  input.HostID,
+		Date:    []g.CreateDate(input.Dates),
+		Status:  schedule_status.Open,
+		Notes:   input.Notes,
 	})
 }
 
-func (*ScheduleCase) createFilter(input *CreateInput, petFound *pet_gateway.GetByFilterOutput) *preference_gateway.GetByFilterInput {
-	filter := &preference_gateway.GetByFilterInput{
-		UserID:      input.HostID,
-		DaysOfMonth: input.DaysOfMonth,
-		PetWeight:   petFound.Weight,
+func (*ScheduleCase) validateSchedule(
+	preference *preference_gateway.GetByFilterOutput,
+	dates []g.CreateDate,
+	pets []pet_gateway.ListOutput,
+	femalesInHeat map[string]bool,
+) bool {
+	if femalesInHeat == nil {
+		femalesInHeat = make(map[string]bool)
 	}
 
-	True := true
-	False := false
-	if pet.Female == petFound.Gender {
-		filter.AcceptFemales = &True
-		filter.AcceptFemaleInHeat = input.FemaleInHeat
-	} else {
-		filter.AcceptMales = &True
-		if !petFound.Neutered {
-			filter.AcceptOnlyNeuteredMales = &False
+	for _, date := range dates {
+		if preference.DaysOfMonth&date.DaysOfMonth != date.DaysOfMonth {
+			return false
 		}
 	}
 
-	petYears := pet.CalculateAge(petFound.Birthdate, time.Now())
+	for _, p := range pets {
+		if pet.Female == p.Gender && !isValidFemale(preference, p, femalesInHeat[p.ID]) {
+			return false
+		}
 
-	if petYears < pet.PuppieAge {
-		filter.AcceptPuppies = &True
-	} else if petYears >= pet.ElderlyAge {
-		filter.AcceptElderly = &True
+		if !isValidMale(preference, p) {
+			return false
+		}
+
+		if preference.PetWeight&p.Weight == 0 {
+			return false
+		}
+
+		petYears := pet.CalculateAge(p.Birthdate, time.Now())
+		if !preference.AcceptPuppies && petYears < pet.PuppieAge {
+			return false
+		} else if !preference.AcceptElderly && petYears >= pet.ElderlyAge {
+			return false
+		}
+
+		if preference.OnlyVaccinated && !p.Vaccinated {
+			return false
+		}
 	}
 
-	if !petFound.Vaccinated {
-		filter.OnlyVaccinated = &False
+	return true
+}
+
+func isValidFemale(preference *preference_gateway.GetByFilterOutput, pet pet_gateway.ListOutput, femaleInHeat bool) bool {
+	if !preference.AcceptFemales {
+		return false
 	}
 
-	return filter
+	if !femaleInHeat || pet.Neutered {
+		return true
+	}
+
+	return preference.AcceptFemaleInHeat
+}
+
+func isValidMale(preference *preference_gateway.GetByFilterOutput, pet pet_gateway.ListOutput) bool {
+	if !preference.AcceptMales {
+		return false
+	}
+
+	if !preference.AcceptOnlyNeuteredMales {
+		return true
+	}
+
+	return pet.Neutered
 }

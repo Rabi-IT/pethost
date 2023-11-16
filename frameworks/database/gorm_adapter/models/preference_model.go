@@ -11,7 +11,6 @@ type Preference struct {
 	AcceptFemaleInHeat      bool   `gorm:"not null"`
 	AcceptPuppies           bool   `gorm:"not null"`
 	AcceptMales             bool   `gorm:"not null"`
-	Availability            uint32 `gorm:"not null"`
 	PetCapacity             uint8  `gorm:"not null"`
 
 	User   User

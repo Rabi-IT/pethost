@@ -4,6 +4,7 @@ import (
 	"pethost/fixtures"
 	"pethost/fixtures/mocks"
 	"pethost/frameworks/database/gateways/pet_gateway"
+	"pethost/frameworks/database/gateways/schedule_gateway"
 	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/preference_case"
@@ -54,14 +55,11 @@ func Test_Unit(t *testing.T) {
 		Neutered:  true,
 	})
 
-	False := false
 	id, err := test.sut.Create(fixtures.DUMMY_CONTEXT, &schedule_case.CreateInput{
-		PetID:        "ANY_ID",
-		HostID:       "ANY_ID",
-		MonthYear:    time.Date(2023, 0, 1, 0, 0, 0, 0, time.UTC),
-		DaysOfMonth:  fixtures.Preference.AllDaysOfMonth,
-		Notes:        "ANY_ID",
-		FemaleInHeat: &False,
+		PetIDs: []string{"ANY_ID"},
+		HostID: "ANY_ID",
+		Notes:  "ANY_ID",
+		Dates:  []schedule_gateway.CreateDate{},
 	})
 	require.Nil(t, err)
 

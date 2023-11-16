@@ -13,15 +13,15 @@ var Schedule = scheduleFixture{
 	URI: "/schedule/",
 }
 
-func (scheduleFixture) Create(t *testing.T, input schedule_case.CreateInput, hostToken string) string {
+func (scheduleFixture) Create(t *testing.T, input schedule_case.CreateInput, hostToken string) (string, int) {
 	id := ""
 
-	Post(t, PostInput{
+	statusCode := Post(t, PostInput{
 		Body:     input,
 		URI:      Schedule.URI,
 		Response: &id,
 		Token:    hostToken,
 	})
 
-	return id
+	return id, statusCode
 }

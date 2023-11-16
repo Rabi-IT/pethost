@@ -20,18 +20,18 @@ type CreateInput struct {
 }
 
 type GetByFilterInput struct {
-	UserID                  string
-	AcceptPuppies           *bool
-	AcceptMales             *bool
-	PetWeight               uint8
-	AcceptFemaleInHeat      *bool
-	AcceptElderly           *bool
-	AcceptOnlyNeuteredMales *bool
-	AcceptFemales           *bool
-	DaysOfMonth             uint32
-	OnlyVaccinated          *bool
+	UserID string
 }
 
 type GetByFilterOutput struct {
-	UserID string
+	UserID                  string
+	DaysOfMonth             uint32
+	OnlyVaccinated          bool
+	AcceptElderly           bool
+	AcceptOnlyNeuteredMales bool
+	AcceptFemales           bool
+	PetWeight               uint8
+	AcceptFemaleInHeat      bool
+	AcceptPuppies           bool
+	AcceptMales             bool
 }
