@@ -47,15 +47,19 @@ type PatchValues struct {
 
 type ListInput struct {
 	TutorID *string
+	PetIDs  []string
 }
 
 type ListOutput struct {
-	Name      string
-	Breed     string
-	Birthdate time.Time
-	Gender    pet.Gender
-	Weight    uint8
-	Species   string
+	ID         string
+	Name       string
+	Breed      string
+	Birthdate  time.Time
+	Gender     pet.Gender
+	Weight     uint8
+	Species    string
+	Neutered   bool
+	Vaccinated bool
 }
 
 type GetByFilterInput struct {
