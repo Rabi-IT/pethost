@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"pethost/fixtures"
 	"pethost/frameworks/database/gateways/schedule_gateway"
+	"pethost/frameworks/database/gateways/schedule_gateway/ports"
 	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/preference_case"
@@ -43,7 +44,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -58,12 +59,16 @@ func Test_Integration_Create(t *testing.T) {
 			},
 			expected: func(scenario fixtures.CreateDefaultOutput) schedule_gateway.PaginateData {
 				return schedule_gateway.PaginateData{
-					MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
-					DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
-					Notes:       "Notes",
-					TutorID:     scenario.TutorID,
-					PetID:       scenario.PetID,
-					Status:      schedule_status.Open,
+					Dates: []ports.ScheduleDate{
+						{
+							MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
+							DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
+						},
+					},
+					Notes:   "Notes",
+					TutorID: scenario.TutorID,
+					PetIDs:  []string{scenario.PetID},
+					Status:  schedule_status.Open,
 				}
 			},
 			statusCode: http.StatusCreated,
@@ -79,7 +84,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{NOT_TUTOR_PET},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -120,7 +125,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: TUTOR_NEEDS,
@@ -160,7 +165,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: TUTOR_NEEDS,
@@ -175,11 +180,15 @@ func Test_Integration_Create(t *testing.T) {
 			expected: func(scenario fixtures.CreateDefaultOutput) schedule_gateway.PaginateData {
 				var from1To3 uint32 = 0b111
 				return schedule_gateway.PaginateData{
-					MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
-					TutorID:     scenario.TutorID,
-					DaysOfMonth: from1To3,
-					PetID:       scenario.PetID,
-					Status:      schedule_status.Open,
+					Dates: []ports.ScheduleDate{
+						{
+							MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
+							DaysOfMonth: from1To3,
+						},
+					},
+					TutorID: scenario.TutorID,
+					PetIDs:  []string{scenario.PetID},
+					Status:  schedule_status.Open,
 				}
 			},
 			statusCode: http.StatusCreated,
@@ -210,7 +219,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -253,7 +262,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -300,7 +309,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -348,7 +357,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -396,7 +405,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -448,7 +457,7 @@ func Test_Integration_Create(t *testing.T) {
 						PetIDs:        []string{scenario.PetID},
 						HostID:        scenario.HostID,
 						FemalesInHeat: FEMALES_IN_HEAT,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -496,7 +505,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -544,7 +553,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,
@@ -592,7 +601,7 @@ func Test_Integration_Create(t *testing.T) {
 					schedule_case.CreateInput{
 						PetIDs: []string{scenario.PetID},
 						HostID: scenario.HostID,
-						Dates: []schedule_gateway.CreateDate{
+						Dates: []ports.ScheduleDate{
 							{
 								MonthYear:   time.Date(2023, 0, 0, 0, 0, 0, 0, time.UTC),
 								DaysOfMonth: fixtures.Preference.AllDaysOfMonth,

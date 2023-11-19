@@ -6,8 +6,12 @@ import (
 	"pethost/frameworks/database/gorm_adapter/models"
 )
 
+var EMPTY_PAGE = &PaginateOutput{
+	Data:     []PaginateData{},
+	MaxPages: 0,
+}
+
 func (g GormScheduleGatewayAdapter) Paginate(filter PaginateFilter, paginate database.PaginateInput) (*PaginateOutput, error) {
-	data := []PaginateData{}
 
 	query := g.DB.Conn.Model(&models.Schedule{}).Where(
 		"status = ?", filter.Status,
@@ -21,19 +25,28 @@ func (g GormScheduleGatewayAdapter) Paginate(filter PaginateFilter, paginate dat
 		return nil, result.Error
 	}
 
-	if result.RowsAffected == 0 {
-		return &PaginateOutput{
-			Data:     data,
-			MaxPages: 0,
-		}, nil
+	if result.RowsAffected == 0 || count == 0 {
+		return EMPTY_PAGE, nil
 	}
 
 	gorm_adapter.Paginate(query, paginate)
 
-	result = query.Scan(&data)
+	model := []models.Schedule{}
+	result = query.Scan(&model)
 
 	if result.Error != nil {
 		return nil, result.Error
+	}
+
+	data := make([]PaginateData, len(model))
+	for i, m := range model {
+		data[i] = PaginateData{
+			PetIDs:  m.PetIDs,
+			TutorID: m.TutorID,
+			Dates:   m.Dates,
+			Status:  m.Status,
+			Notes:   m.Notes,
+		}
 	}
 
 	output := &PaginateOutput{
