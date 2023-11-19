@@ -4,7 +4,7 @@ import (
 	"pethost/fixtures"
 	"pethost/fixtures/mocks"
 	"pethost/frameworks/database/gateways/pet_gateway"
-	"pethost/frameworks/database/gateways/schedule_gateway"
+	"pethost/frameworks/database/gateways/schedule_gateway/ports"
 	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/preference_case"
@@ -59,7 +59,7 @@ func Test_Unit(t *testing.T) {
 		PetIDs: []string{"ANY_ID"},
 		HostID: "ANY_ID",
 		Notes:  "ANY_ID",
-		Dates:  []schedule_gateway.CreateDate{},
+		Dates:  []ports.ScheduleDate{},
 	})
 	require.Nil(t, err)
 

@@ -5,6 +5,7 @@ import (
 	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/frameworks/database/gateways/preference_gateway"
 	g "pethost/frameworks/database/gateways/schedule_gateway"
+	"pethost/frameworks/database/gateways/schedule_gateway/ports"
 	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/schedule_case/schedule_status"
@@ -13,9 +14,9 @@ import (
 )
 
 type CreateInput struct {
-	HostID        string         `validate:"required"`
-	PetIDs        []string       `validate:"required"`
-	Dates         []g.CreateDate `validate:"required"`
+	HostID        string               `validate:"required"`
+	PetIDs        []string             `validate:"required"`
+	Dates         []ports.ScheduleDate `validate:"required"`
 	FemalesInHeat map[string]bool
 	Notes         string
 }
@@ -49,7 +50,7 @@ func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (
 		PetIDs:  input.PetIDs,
 		TutorID: ctx.Session.UserID,
 		HostID:  input.HostID,
-		Date:    []g.CreateDate(input.Dates),
+		Dates:   input.Dates,
 		Status:  schedule_status.Open,
 		Notes:   input.Notes,
 	})
@@ -57,7 +58,7 @@ func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (
 
 func (*ScheduleCase) validateSchedule(
 	preference *preference_gateway.GetByFilterOutput,
-	dates []g.CreateDate,
+	dates []ports.ScheduleDate,
 	pets []pet_gateway.ListOutput,
 	femalesInHeat map[string]bool,
 ) bool {
