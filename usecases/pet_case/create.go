@@ -15,10 +15,10 @@ type CreateInput struct {
 	Breed      string
 	Birthdate  time.Time  `validate:"required"`
 	Gender     pet.Gender `validate:"required"`
-	Weight     uint8      `validate:"required"`
-	Species    string     `validate:"required"`
-	Neutered   bool       `validate:"required"`
-	Vaccinated bool       `validate:"required"`
+	Weight     pet.Weight `validate:"required"`
+	Species    pet.Specie `validate:"required"`
+	Neutered   *bool      `validate:"required"`
+	Vaccinated *bool      `validate:"required"`
 }
 
 var ErrInvalidWeight = errors.New("invalid weight")
@@ -40,7 +40,7 @@ func (c PetCase) Create(ctx *core_context.AppContext, input *CreateInput) (strin
 		Weight:     input.Weight,
 		Species:    input.Species,
 		UserID:     ctx.Session.UserID,
-		Neutered:   input.Neutered,
-		Vaccinated: input.Vaccinated,
+		Neutered:   *input.Neutered,
+		Vaccinated: *input.Vaccinated,
 	})
 }

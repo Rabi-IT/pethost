@@ -1,5 +1,7 @@
 package preference_gateway
 
+import "pethost/usecases/pet_case/pet"
+
 type PreferenceGateway interface {
 	Create(input CreateInput) (string, error)
 	GetByFilter(filter *GetByFilterInput) (*GetByFilterOutput, error)
@@ -9,7 +11,7 @@ type CreateInput struct {
 	UserID                  string
 	AcceptPuppies           bool
 	AcceptMales             bool
-	PetWeight               uint8
+	PetWeight               pet.Weight
 	AcceptFemaleInHeat      bool
 	AcceptElderly           bool
 	AcceptOnlyNeuteredMales bool
@@ -30,7 +32,7 @@ type GetByFilterOutput struct {
 	AcceptElderly           bool
 	AcceptOnlyNeuteredMales bool
 	AcceptFemales           bool
-	PetWeight               uint8
+	PetWeight               pet.Weight
 	AcceptFemaleInHeat      bool
 	AcceptPuppies           bool
 	AcceptMales             bool

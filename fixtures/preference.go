@@ -1,6 +1,7 @@
 package fixtures
 
 import (
+	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/preference_case"
 	"testing"
 )
@@ -8,9 +9,9 @@ import (
 type preferenceFixture struct {
 	URI            string
 	AllDaysOfMonth uint32
-	AllPetWeight   uint8
-	OnlyLargePets  uint8
-	OnlySmallPets  uint8
+	AllPetWeight   pet.Weight
+	OnlyLargePets  pet.Weight
+	OnlySmallPets  pet.Weight
 }
 
 var Preference = preferenceFixture{

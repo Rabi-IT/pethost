@@ -4,19 +4,20 @@ import (
 	"pethost/app_context"
 	g "pethost/frameworks/database/gateways/preference_gateway"
 	"pethost/usecases/errors_case"
+	"pethost/usecases/pet_case/pet"
 	"pethost/utils"
 )
 
 type CreateInput struct {
-	OnlyVaccinated          *bool  `validate:"required"`
-	AcceptElderly           *bool  `validate:"required"`
-	AcceptOnlyNeuteredMales *bool  `validate:"required"`
-	AcceptFemales           *bool  `validate:"required"`
-	DaysOfMonth             uint32 `validate:"required"`
-	AcceptFemaleInHeat      *bool  `validate:"required"`
-	AcceptPuppies           *bool  `validate:"required"`
-	AcceptMales             *bool  `validate:"required"`
-	PetWeight               uint8  `validate:"required"`
+	OnlyVaccinated          *bool      `validate:"required"`
+	AcceptElderly           *bool      `validate:"required"`
+	AcceptOnlyNeuteredMales *bool      `validate:"required"`
+	AcceptFemales           *bool      `validate:"required"`
+	DaysOfMonth             uint32     `validate:"required"`
+	AcceptFemaleInHeat      *bool      `validate:"required"`
+	AcceptPuppies           *bool      `validate:"required"`
+	AcceptMales             *bool      `validate:"required"`
+	PetWeight               pet.Weight `validate:"required"`
 }
 
 func (c PreferenceCase) Create(ctx *app_context.AppContext, input *CreateInput) (string, error) {

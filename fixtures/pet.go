@@ -12,35 +12,26 @@ import (
 )
 
 type petFixture struct {
-	URI          string
-	VerySmallPet uint8
-	SmallPet     uint8
-	MediumPet    uint8
-	LargePet     uint8
-	VeryLargePet uint8
+	URI string
 }
 
 var Pet = petFixture{
-	URI:          "/pet/",
-	VerySmallPet: 0b00001,
-	SmallPet:     0b00010,
-	MediumPet:    0b00100,
-	LargePet:     0b01000,
-	VeryLargePet: 0b10000,
+	URI: "/pet/",
 }
 
 func (petFixture) Create(t *testing.T, input *pet_case.CreateInput, token string) string {
 	Body := input
 	if Body == nil {
+		True := true
 		Body = &pet_case.CreateInput{
 			Name:       "Name",
 			Breed:      "Breed",
 			Birthdate:  time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 			Gender:     pet.Male,
-			Weight:     Pet.MediumPet,
+			Weight:     pet.Medium,
 			Species:    "Species",
-			Neutered:   true,
-			Vaccinated: true,
+			Neutered:   &True,
+			Vaccinated: &True,
 		}
 	}
 

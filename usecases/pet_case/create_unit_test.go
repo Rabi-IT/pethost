@@ -5,6 +5,7 @@ import (
 	"pethost/fixtures/mocks"
 	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/usecases/pet_case"
+	"pethost/usecases/pet_case/pet"
 	"testing"
 	"time"
 
@@ -19,13 +20,16 @@ func makeSut(g pet_gateway.PetGateway) *pet_case.PetCase {
 func Test_Unit_Create__should_fail_if_name_is_empty(t *testing.T) {
 	sut := makeSut(nil)
 
+	False := false
 	_, err := sut.Create(fixtures.DUMMY_CONTEXT, &pet_case.CreateInput{
-		Name:      "",
-		Breed:     "Breed",
-		Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
-		Gender:    "Gender",
-		Weight:    fixtures.Preference.AllPetWeight,
-		Species:   "Species",
+		Name:       "",
+		Breed:      "Breed",
+		Birthdate:  time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
+		Gender:     pet.Male,
+		Weight:     pet.Medium,
+		Species:    pet.Dog,
+		Neutered:   &False,
+		Vaccinated: &False,
 	})
 
 	expectedMsg := "Key: 'CreateInput.Name' Error:Field validation for 'Name' failed on the 'required' tag"
@@ -44,7 +48,7 @@ func Test_Unit_Create__should_not_fail_if_all_optional_fields_are_not_filled_in(
 		Breed:     "",
 		Birthdate: time.Date(2000, 0, 1, 0, 0, 0, 0, time.UTC),
 		Gender:    "",
-		Weight:    fixtures.Preference.AllPetWeight,
+		Weight:    pet.Medium,
 		Species:   "",
 	})
 
