@@ -7,8 +7,8 @@ import (
 
 type Pet struct {
 	ID         string     `gorm:"type:uuid"`
-	Weight     uint8      `gorm:"not null"`
-	Species    string     `gorm:"not null"`
+	Weight     pet.Weight `gorm:"not null"`
+	Species    pet.Specie `gorm:"not null"`
 	Name       string     `gorm:"not null"`
 	Breed      string     `gorm:"not null"`
 	Birthdate  time.Time  `gorm:"not null"`

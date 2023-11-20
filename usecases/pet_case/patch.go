@@ -20,7 +20,7 @@ type PatchValues struct {
 	Breed      string
 	Birthdate  time.Time
 	Gender     pet.Gender
-	Weight     uint8
+	Weight     pet.Weight
 	Species    string
 	Name       string
 	Neutered   *bool

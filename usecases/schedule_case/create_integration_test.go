@@ -209,7 +209,7 @@ func Test_Integration_Create(t *testing.T) {
 					PetWeight:               fixtures.Preference.OnlySmallPets,
 				})
 
-				newPetWeight := pet_case.PatchValues{Weight: fixtures.Pet.VeryLargePet}
+				newPetWeight := pet_case.PatchValues{Weight: pet.VeryLarge}
 				response, status := fixtures.Pet.Patch(t, scenario.PetID, newPetWeight, scenario.TutorToken)
 				require.Equal(t, "OK", response)
 				require.Equal(t, http.StatusOK, status)
@@ -252,7 +252,7 @@ func Test_Integration_Create(t *testing.T) {
 					PetWeight:               fixtures.Preference.OnlyLargePets,
 				})
 
-				newPetWeight := pet_case.PatchValues{Weight: fixtures.Pet.SmallPet}
+				newPetWeight := pet_case.PatchValues{Weight: pet.Small}
 				response, status := fixtures.Pet.Patch(t, scenario.PetID, newPetWeight, scenario.TutorToken)
 				require.Equal(t, "OK", response)
 				require.Equal(t, http.StatusOK, status)

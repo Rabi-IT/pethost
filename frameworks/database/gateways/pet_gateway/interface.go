@@ -15,12 +15,12 @@ type PetGateway interface {
 
 type CreateInput struct {
 	UserID     string
-	Species    string
+	Species    pet.Specie
 	Name       string
 	Breed      string
 	Birthdate  time.Time
 	Gender     pet.Gender
-	Weight     uint8
+	Weight     pet.Weight
 	Neutered   bool
 	Vaccinated bool
 }
@@ -40,7 +40,7 @@ type PatchValues struct {
 	Breed      string
 	Birthdate  time.Time
 	Gender     pet.Gender
-	Weight     uint8
+	Weight     pet.Weight
 	Neutered   *bool
 	Vaccinated *bool
 }
@@ -56,7 +56,7 @@ type ListOutput struct {
 	Breed      string
 	Birthdate  time.Time
 	Gender     pet.Gender
-	Weight     uint8
+	Weight     pet.Weight
 	Species    string
 	Neutered   bool
 	Vaccinated bool
@@ -72,7 +72,7 @@ type GetByFilterOutput struct {
 	Breed      string
 	Birthdate  time.Time
 	Gender     pet.Gender
-	Weight     uint8
+	Weight     pet.Weight
 	Species    string
 	Neutered   bool
 	Vaccinated bool
