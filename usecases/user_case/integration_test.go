@@ -102,15 +102,18 @@ func Test_Integration_should_not_be_able_to_paginate_if_is_user(t *testing.T) {
 func Test_Integration_should_be_able_to_paginate_if_is_backoffice(t *testing.T) {
 	fixtures.CleanDatabase()
 
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 4; i++ {
 		fixtures.User.Create(t, nil)
 	}
+
+	userId := fixtures.User.Create(t, nil)
+	backofficeToken := fixtures.NewBackofficeToken(t, userId)
 
 	responseBody := user_gateway.PaginateOutput{}
 	statusCode := fixtures.Get(t, fixtures.GetInput{
 		URI:      fixtures.User.URI,
 		Response: &responseBody,
-		Token:    fixtures.BackofficeToken(t),
+		Token:    backofficeToken,
 	})
 
 	require.Equal(t, http.StatusOK, statusCode)

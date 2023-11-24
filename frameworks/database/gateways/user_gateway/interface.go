@@ -1,6 +1,9 @@
 package user_gateway
 
-import "pethost/frameworks/database"
+import (
+	"pethost/frameworks/database"
+	"pethost/usecases/auth_case/role"
+)
 
 type UserGateway interface {
 	Create(input CreateInput) (string, error)
@@ -24,6 +27,7 @@ type CreateInput struct {
 	Name           string
 	Email          string
 	Neighborhood   string
+	Role           role.Role
 	IsHost         bool
 }
 
@@ -87,6 +91,7 @@ type PaginateFilter struct {
 	EmergencyPhone *string
 	Name           *string
 	Email          *string
+	Role           *role.Role
 }
 
 type PaginateData struct {
