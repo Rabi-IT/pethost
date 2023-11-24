@@ -3,12 +3,13 @@ package fixtures
 import (
 	"pethost/usecases/pet_case/pet"
 	"pethost/usecases/preference_case"
+	"pethost/usecases/schedule_case/schedule"
 	"testing"
 )
 
 type preferenceFixture struct {
 	URI            string
-	AllDaysOfMonth uint32
+	AllDaysOfMonth schedule.DaysOfMonth
 	AllPetWeight   pet.Weight
 	OnlyLargePets  pet.Weight
 	OnlySmallPets  pet.Weight
@@ -50,7 +51,7 @@ func (preferenceFixture) Create(t *testing.T, token string, input *preference_ca
 	return id
 }
 
-type CreateDefaultOutput struct {
+type PreferenceDefaultOutput struct {
 	TutorID      string
 	TutorToken   string
 	HostID       string
@@ -59,7 +60,7 @@ type CreateDefaultOutput struct {
 	PreferenceID string
 }
 
-func (preferenceFixture) CreateDefault(t *testing.T, input *preference_case.CreateInput) (output CreateDefaultOutput) {
+func (preferenceFixture) CreateDefault(t *testing.T, input *preference_case.CreateInput) (output PreferenceDefaultOutput) {
 	output.TutorID = User.Create(t, nil)
 	output.TutorToken = User.Login(t, &output.TutorID)
 	output.PetID = Pet.Create(t, nil, output.TutorToken)

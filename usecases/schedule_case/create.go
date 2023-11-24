@@ -5,18 +5,19 @@ import (
 	"pethost/frameworks/database/gateways/pet_gateway"
 	"pethost/frameworks/database/gateways/preference_gateway"
 	g "pethost/frameworks/database/gateways/schedule_gateway"
-	"pethost/frameworks/database/gateways/schedule_gateway/ports"
 	"pethost/usecases/pet_case"
 	"pethost/usecases/pet_case/pet"
+	"pethost/usecases/schedule_case/schedule"
 	"pethost/usecases/schedule_case/schedule_status"
 	"pethost/utils"
 	"time"
 )
 
 type CreateInput struct {
-	HostID        string               `validate:"required"`
-	PetIDs        []string             `validate:"required"`
-	Dates         []ports.ScheduleDate `validate:"required"`
+	HostID        string    `validate:"required"`
+	PetIDs        []string  `validate:"required"`
+	StartDate     time.Time `validate:"required"`
+	EndDate       time.Time `validate:"required"`
 	FemalesInHeat map[string]bool
 	Notes         string
 }
@@ -42,23 +43,25 @@ func (c *ScheduleCase) Create(ctx *app_context.AppContext, input *CreateInput) (
 		return
 	}
 
-	if valid := c.validateSchedule(preference, input.Dates, petsFound, input.FemalesInHeat); !valid {
+	if valid := c.validateSchedule(preference, input.StartDate, input.EndDate, petsFound, input.FemalesInHeat); !valid {
 		return
 	}
 
 	return c.gateway.Create(g.CreateInput{
-		PetIDs:  input.PetIDs,
-		TutorID: ctx.Session.UserID,
-		HostID:  input.HostID,
-		Dates:   input.Dates,
-		Status:  schedule_status.Open,
-		Notes:   input.Notes,
+		PetIDs:    input.PetIDs,
+		TutorID:   ctx.Session.UserID,
+		HostID:    input.HostID,
+		StartDate: input.StartDate,
+		EndDate:   input.EndDate,
+		Status:    schedule_status.Open,
+		Notes:     input.Notes,
 	})
 }
 
 func (*ScheduleCase) validateSchedule(
 	preference *preference_gateway.GetByFilterOutput,
-	dates []ports.ScheduleDate,
+	startDate time.Time,
+	endDate time.Time,
 	pets []pet_gateway.ListOutput,
 	femalesInHeat map[string]bool,
 ) bool {
@@ -66,8 +69,18 @@ func (*ScheduleCase) validateSchedule(
 		femalesInHeat = make(map[string]bool)
 	}
 
-	for _, date := range dates {
-		if preference.DaysOfMonth&date.DaysOfMonth != date.DaysOfMonth {
+	if startDate.Before(time.Now()) {
+		return false
+	}
+
+	if startDate.After(endDate) {
+		return false
+	}
+
+	dates := schedule.ToSchedule(startDate, endDate)
+
+	for _, d := range dates {
+		if (preference.DaysOfMonth & d.DaysOfMonth) != d.DaysOfMonth {
 			return false
 		}
 	}

@@ -17,6 +17,14 @@ type UserSession struct {
 	Role           role.Role
 }
 
+func (u *UserSession) GetOriginalUser() string {
+	if u.Role.IsUser() {
+		return u.UserID
+	}
+
+	return u.OriginalUserID
+}
+
 func getSession(ctx context.Context) *UserSession {
 	session, ok := ctx.Value(SessionKey).(*UserSession)
 	if !ok {
