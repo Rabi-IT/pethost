@@ -25,11 +25,14 @@ func SystemToken(t *testing.T) string {
 }
 
 func BackofficeToken(t *testing.T) string {
+	id := User.Create(t, nil)
+
 	claims := jwt.MapClaims{
-		"user_id": "backoffice",
-		"name":    "backoffice",
-		"email":   "backoffice@backoffice.com",
-		"role":    role.Backoffice,
+		"user_id":          id,
+		"name":             "backoffice",
+		"email":            "backoffice@backoffice.com",
+		"role":             role.Backoffice,
+		"original_user_id": id,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

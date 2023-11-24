@@ -9,16 +9,19 @@ import (
 )
 
 type Schedule struct {
-	ID      string `gorm:"type:uuid"`
-	TutorID string `gorm:"not null; uniqueIndex:unique_schedule_date"`
-	HostID  string `gorm:"not null; uniqueIndex:unique_schedule_date"`
-	PetIDs  datatypes.JSONSlice[string]
-	Dates   datatypes.JSONSlice[ports.ScheduleDate]
-	Tutor   User
-	Host    User
+	ID        string `gorm:"type:uuid"`
+	TutorID   string `gorm:"not null; uniqueIndex:unique_schedule_date"`
+	HostID    string `gorm:"not null; uniqueIndex:unique_schedule_date"`
+	PetIDs    datatypes.JSONSlice[string]
+	StartDate time.Time
+	EndDate   time.Time
+	Tutor     User
+	Host      User
 
-	Status    schedule_status.Status `gorm:"not null"`
-	Notes     string
+	Status schedule_status.Status `gorm:"not null"`
+	Notes  string
+
+	History   datatypes.JSONSlice[ports.ScheduleHistory] `gorm:"default:'[]'::jsonb"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

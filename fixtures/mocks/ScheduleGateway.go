@@ -39,6 +39,32 @@ func (_m *ScheduleGateway) Create(input schedule_gateway.CreateInput) (string, e
 	return r0, r1
 }
 
+// GetByID provides a mock function with given fields: id
+func (_m *ScheduleGateway) GetByID(id string) (*schedule_gateway.GetByIDOutput, error) {
+	ret := _m.Called(id)
+
+	var r0 *schedule_gateway.GetByIDOutput
+	var r1 error
+	if rf, ok := ret.Get(0).(func(string) (*schedule_gateway.GetByIDOutput, error)); ok {
+		return rf(id)
+	}
+	if rf, ok := ret.Get(0).(func(string) *schedule_gateway.GetByIDOutput); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*schedule_gateway.GetByIDOutput)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Paginate provides a mock function with given fields: filter, paginate
 func (_m *ScheduleGateway) Paginate(filter schedule_gateway.PaginateFilter, paginate database.PaginateInput) (*schedule_gateway.PaginateOutput, error) {
 	ret := _m.Called(filter, paginate)

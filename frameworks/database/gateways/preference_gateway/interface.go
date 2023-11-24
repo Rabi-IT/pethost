@@ -1,6 +1,9 @@
 package preference_gateway
 
-import "pethost/usecases/pet_case/pet"
+import (
+	"pethost/usecases/pet_case/pet"
+	"pethost/usecases/schedule_case/schedule"
+)
 
 type PreferenceGateway interface {
 	Create(input CreateInput) (string, error)
@@ -16,7 +19,7 @@ type CreateInput struct {
 	AcceptElderly           bool
 	AcceptOnlyNeuteredMales bool
 	AcceptFemales           bool
-	DaysOfMonth             uint32
+	DaysOfMonth             schedule.DaysOfMonth
 	OnlyVaccinated          bool
 	Capacity                uint8
 }
@@ -27,7 +30,7 @@ type GetByFilterInput struct {
 
 type GetByFilterOutput struct {
 	UserID                  string
-	DaysOfMonth             uint32
+	DaysOfMonth             schedule.DaysOfMonth
 	OnlyVaccinated          bool
 	AcceptElderly           bool
 	AcceptOnlyNeuteredMales bool

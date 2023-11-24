@@ -13,7 +13,7 @@ type PaginateFilter struct {
 
 func (c ScheduleCase) Paginate(ctx *app_context.AppContext, input PaginateFilter, paginate database.PaginateInput) (*g.PaginateOutput, error) {
 	return c.gateway.Paginate(g.PaginateFilter{
-		HostID: ctx.Session.UserID,
-		Status: input.Status,
+		HostID: &ctx.Session.UserID,
+		Status: &input.Status,
 	}, paginate)
 }

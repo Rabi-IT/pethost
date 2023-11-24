@@ -13,11 +13,19 @@ var EMPTY_PAGE = &PaginateOutput{
 
 func (g GormScheduleGatewayAdapter) Paginate(filter PaginateFilter, paginate database.PaginateInput) (*PaginateOutput, error) {
 
-	query := g.DB.Conn.Model(&models.Schedule{}).Where(
-		"status = ?", filter.Status,
-	).Where(
-		"host_id = ?", filter.HostID,
-	)
+	query := g.DB.Conn.Model(&models.Schedule{})
+
+	if filter.Status == nil {
+		query.Where("status = ?", filter.Status)
+	}
+
+	if filter.HostID != nil {
+		query.Where("host_id = ?", filter.HostID)
+	}
+
+	if filter.TutorID != nil {
+		query.Where("tutor_id = ?", filter.TutorID)
+	}
 
 	var count int64
 	result := query.Count(&count)
@@ -41,11 +49,12 @@ func (g GormScheduleGatewayAdapter) Paginate(filter PaginateFilter, paginate dat
 	data := make([]PaginateData, len(model))
 	for i, m := range model {
 		data[i] = PaginateData{
-			PetIDs:  m.PetIDs,
-			TutorID: m.TutorID,
-			Dates:   m.Dates,
-			Status:  m.Status,
-			Notes:   m.Notes,
+			PetIDs:    m.PetIDs,
+			TutorID:   m.TutorID,
+			StartDate: m.StartDate,
+			EndDate:   m.EndDate,
+			Status:    m.Status,
+			Notes:     m.Notes,
 		}
 	}
 

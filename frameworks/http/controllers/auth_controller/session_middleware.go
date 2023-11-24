@@ -21,14 +21,15 @@ func Session(c *fiber.Ctx) error {
 		return errors.New("INVALID_CLAIMS")
 	}
 
-	c.Context().SetUserValue(
-		app_context.SessionKey,
-		&app_context.UserSession{
-			UserID: fmt.Sprint(claims["user_id"]),
-			Name:   fmt.Sprint(claims["name"]),
-			Login:  fmt.Sprint(claims["login"]),
-			Role:   role.Role(fmt.Sprint(claims["role"])),
-		})
+	session := &app_context.UserSession{
+		UserID:         fmt.Sprint(claims["user_id"]),
+		Name:           fmt.Sprint(claims["name"]),
+		Login:          fmt.Sprint(claims["login"]),
+		OriginalUserID: fmt.Sprint(claims["original_user_id"]),
+		Role:           role.Role(fmt.Sprint(claims["role"])),
+	}
+
+	c.Context().SetUserValue(app_context.SessionKey, session)
 
 	return c.Next()
 }
