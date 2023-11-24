@@ -24,6 +24,7 @@ func (g *GormUserGatewayAdapter) Create(input CreateInput) (string, error) {
 		City:           input.City,
 		State:          input.State,
 		Neighborhood:   input.Neighborhood,
+		Role:           input.Role,
 		IsHost:         input.IsHost,
 	})
 

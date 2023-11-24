@@ -3,6 +3,7 @@ package user_case
 import (
 	"context"
 	g "pethost/frameworks/database/gateways/user_gateway"
+	"pethost/usecases/auth_case/role"
 	"pethost/utils"
 )
 
@@ -42,6 +43,7 @@ func (c UserCase) Create(ctx context.Context, input *CreateInput) (string, error
 		EmergencyPhone: input.EmergencyPhone,
 		Neighborhood:   input.Neighborhood,
 		Name:           input.Name,
+		Role:           role.User,
 		IsHost:         input.IsHost,
 	})
 }

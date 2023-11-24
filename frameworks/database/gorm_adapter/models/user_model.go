@@ -1,5 +1,7 @@
 package models
 
+import "pethost/usecases/auth_case/role"
+
 type User struct {
 	ID             string `gorm:"type:uuid"`
 	SocialID       string
@@ -15,6 +17,7 @@ type User struct {
 	State          string
 	ZIP            string
 	Neighborhood   string
+	Role           role.Role
 	IsHost         bool
 }
 
