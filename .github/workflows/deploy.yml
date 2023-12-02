@@ -1,0 +1,44 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: 
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    container: golang:1.21.0
+
+    steps:
+      - name: Fetch Repository
+        uses: actions/checkout@v2
+
+      - name: Generate binary
+        run: go build -o pethost-core cmd/server/main.go
+
+      - name: Rename binary
+        run: mv pethost-core pethost-core@latest
+
+      - name: Copy binary
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_PRODUCTION }}
+          username: ${{ secrets.SSH_USER_PRODUCTION }}
+          key: ${{ secrets.SSH_KEY_PRODUCTION }}
+          source: "./pethost-core@latest"
+          target: "~/"
+
+      - name: Deploy script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_PRODUCTION }}
+          username: ${{ secrets.SSH_USER_PRODUCTION }}
+          key: ${{ secrets.SSH_KEY_PRODUCTION }}
+          script: |
+            mv pethost-core@latest pethost-core
+            chmod 700 pethost-core
+            sudo systemctl restart pethost.service
