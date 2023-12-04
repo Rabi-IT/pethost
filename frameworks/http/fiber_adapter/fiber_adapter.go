@@ -43,6 +43,10 @@ func newFiber(d database.Database) http.HTTPServer {
 		requestid.New(),
 	).Post(
 		"/user", userController.Create,
+	).Get(
+		"/user", userController.Paginate,
+	).Get(
+		"/user/:id", userController.GetByID,
 	).Use(
 		jwtware.New(jwtware.Config{
 			SigningKey: jwtware.SigningKey{Key: []byte(config.AuthSecret)},
