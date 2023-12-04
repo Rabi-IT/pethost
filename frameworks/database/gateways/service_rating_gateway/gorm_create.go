@@ -10,12 +10,11 @@ func (g *GormServiceRatingGatewayAdapter) Create(input CreateInput) (string, err
 	id := uuid.NewString()
 
 	result := g.DB.Conn.Create(&models.ServiceRating{
-		ID:         id,
-		TutorID:    input.TutorID,
-		ScheduleID: input.ScheduleID,
-		Date:       input.Date,
-		Rating:     input.Rating,
-		Comment:    input.Comment,
+		ID:      id,
+		TutorID: input.TutorID,
+		Date:    input.Date,
+		Rating:  input.Rating,
+		Comment: input.Comment,
 	})
 
 	return id, result.Error

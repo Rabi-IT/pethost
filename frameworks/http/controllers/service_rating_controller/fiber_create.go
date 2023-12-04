@@ -1,6 +1,7 @@
 package service_rating_controller
 
 import (
+	"pethost/app_context"
 	"pethost/usecases/service_rating_case"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,7 +13,7 @@ func (c ServiceRatingController) Create(ctx *fiber.Ctx) error {
 		return ctx.JSON(err)
 	}
 
-	id, err := c.usecase.Create(ctx.Context(), data)
+	id, err := c.usecase.Create(app_context.New(ctx.Context()), data)
 
 	if err != nil {
 		return err

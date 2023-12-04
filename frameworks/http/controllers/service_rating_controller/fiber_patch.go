@@ -1,6 +1,7 @@
 package service_rating_controller
 
 import (
+	"pethost/app_context"
 	"pethost/frameworks/http/fiber_adapter/parser"
 	"pethost/usecases/service_rating_case"
 
@@ -18,7 +19,7 @@ func (c ServiceRatingController) Patch(ctx *fiber.Ctx) error {
 		return ctx.JSON(err)
 	}
 
-	updated, err := c.usecase.Patch(ctx.Context(), *filter, data)
+	updated, err := c.usecase.Patch(app_context.New(ctx.Context()), *filter, data)
 
 	if err != nil {
 		return err
