@@ -11,36 +11,8 @@ func (g GormUserGatewayAdapter) Paginate(filter PaginateFilter, paginate databas
 
 	query := g.DB.Conn.Model(&models.User{})
 
-	if filter.TaxID != nil {
-		query = query.Where("tax_id = ?", filter.TaxID)
-	}
-
-	if filter.SocialID != nil {
-		query = query.Where("social_id = ?", filter.SocialID)
-	}
-
-	if filter.Street != nil {
-		query = query.Where("street = ?", filter.Street)
-	}
-
-	if filter.Complement != nil {
-		query = query.Where("complement = ?", filter.Complement)
-	}
-
-	if filter.EmergencyPhone != nil {
-		query = query.Where("emergency_phone = ?", filter.EmergencyPhone)
-	}
-
 	if filter.Name != nil {
 		query = query.Where("name = ?", filter.Name)
-	}
-
-	if filter.Email != nil {
-		query = query.Where("email = ?", filter.Email)
-	}
-
-	if filter.ZIP != nil {
-		query = query.Where("zip = ?", filter.ZIP)
 	}
 
 	if filter.City != nil {
