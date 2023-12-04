@@ -85,6 +85,7 @@ type PaginateFilter struct {
 }
 
 type PaginateData struct {
+	ID    string
 	Photo string
 	Name  string
 	State string
