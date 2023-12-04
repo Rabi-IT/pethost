@@ -11,16 +11,8 @@ func (g GormServiceRatingGatewayAdapter) Paginate(filter PaginateFilter, paginat
 
 	query := g.DB.Conn.Model(&models.ServiceRating{})
 
-	if filter.Comment != nil {
-		query = query.Where("comment = ?", filter.Comment)
-	}
-
-	if filter.TutorID != nil {
-		query = query.Where("tutor_id = ?", filter.TutorID)
-	}
-
-	if filter.ScheduleID != nil {
-		query = query.Where("schedule_id = ?", filter.ScheduleID)
+	if filter.HostID != nil {
+		query = query.Where("tutor_id = ?", filter.HostID)
 	}
 
 	if filter.Date != nil {
