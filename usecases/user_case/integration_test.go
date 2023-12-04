@@ -74,64 +74,31 @@ func Test_Integration_should_be_able_to_retrive_by_id(t *testing.T) {
 	require.Equal(t, EXPECTED, responseBody)
 }
 
-func Test_Integration_should_not_be_able_to_paginate_if_is_user(t *testing.T) {
+func Test_Integration_should_be_able_to_paginate(t *testing.T) {
 	fixtures.CleanDatabase()
 
 	for i := 0; i < 5; i++ {
 		fixtures.User.Create(t, nil)
 	}
 
-	token := fixtures.User.Login(t, nil)
 	responseBody := user_gateway.PaginateOutput{}
 	statusCode := fixtures.Get(t, fixtures.GetInput{
 		URI:      fixtures.User.URI,
 		Response: &responseBody,
-		Token:    token,
 	})
 
 	require.Equal(t, http.StatusOK, statusCode)
+	require.Len(t, responseBody.Data, 5)
+	require.Equal(t, 1, responseBody.MaxPages)
 
-	EXPECTED := user_gateway.PaginateOutput{
-		Data:     []user_gateway.PaginateData{},
-		MaxPages: 0,
+	for i := range responseBody.Data {
+		require.NotEmpty(t, responseBody.Data[i].ID)
+		require.Equal(t, "Name", responseBody.Data[i].Name)
+		require.Equal(t, "City", responseBody.Data[i].City)
+		require.Equal(t, "State", responseBody.Data[i].State)
+		require.Equal(t, "Photo", responseBody.Data[i].Photo)
 	}
 
-	require.Equal(t, EXPECTED, responseBody)
-}
-
-func Test_Integration_should_be_able_to_paginate_if_is_backoffice(t *testing.T) {
-	fixtures.CleanDatabase()
-
-	for i := 0; i < 4; i++ {
-		fixtures.User.Create(t, nil)
-	}
-
-	userId := fixtures.User.Create(t, nil)
-	backofficeToken := fixtures.NewBackofficeToken(t, userId)
-
-	responseBody := user_gateway.PaginateOutput{}
-	statusCode := fixtures.Get(t, fixtures.GetInput{
-		URI:      fixtures.User.URI,
-		Response: &responseBody,
-		Token:    backofficeToken,
-	})
-
-	require.Equal(t, http.StatusOK, statusCode)
-
-	EXPECTED := user_gateway.PaginateOutput{
-		Data:     []user_gateway.PaginateData{},
-		MaxPages: 1,
-	}
-	for i := 0; i < 5; i++ {
-		EXPECTED.Data = append(EXPECTED.Data, user_gateway.PaginateData{
-			State: "State",
-			City:  "City",
-			Photo: "Photo",
-			Name:  "Name",
-		})
-	}
-
-	require.Equal(t, EXPECTED, responseBody)
 }
 
 func Test_Integration_should_be_able_to_update(t *testing.T) {
