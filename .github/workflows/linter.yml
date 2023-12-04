@@ -8,7 +8,8 @@ on:
       - staging
 
 jobs:
-  Golint:
+  golangci-lint:
+    name: runner / golangci-lint
     runs-on: ubuntu-latest
 
     steps:
@@ -17,5 +18,3 @@ jobs:
 
       - name: Run Golint
         uses: reviewdog/action-golangci-lint@v2
-        with:
-          golangci_lint_flags: "--tests=false"
