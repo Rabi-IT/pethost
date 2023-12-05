@@ -53,6 +53,7 @@ type ListInput struct {
 type ListOutput struct {
 	ID         string
 	Name       string
+	Photo      string
 	Breed      string
 	Birthdate  time.Time
 	Gender     pet.Gender
