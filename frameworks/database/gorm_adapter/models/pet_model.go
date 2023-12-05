@@ -11,6 +11,7 @@ type Pet struct {
 	Species    pet.Specie `gorm:"not null"`
 	Name       string     `gorm:"not null"`
 	Breed      string     `gorm:"not null"`
+	Photo      string     `gorm:"not null"`
 	Birthdate  time.Time  `gorm:"not null"`
 	Gender     pet.Gender `gorm:"not null"`
 	Neutered   bool       `gorm:"not null"`
